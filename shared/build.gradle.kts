@@ -1,7 +1,10 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization") version "1.6.10"
   id("com.android.library")
+  id("com.codingfeline.buildkonfig")
 }
 
 kotlin {
@@ -57,6 +60,14 @@ android {
   defaultConfig {
     minSdk = 26
     targetSdk = 31
+  }
+}
+
+buildkonfig {
+  packageName = "net.ambitious.daigoapp"
+  defaultConfigs {
+    buildConfigField(STRING, "host", System.getenv("HOST") ?: "http://10.0.2.2:8080")
+    buildConfigField(STRING, "bearer", System.getenv("BEARER") ?: "test_test")
   }
 }
 
