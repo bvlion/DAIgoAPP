@@ -14,6 +14,7 @@ expect class APIClient() {
   val noAuthClient: HttpClient
   val authClient: HttpClient
   val dispatcher: CoroutineDispatcher
+  val host: String
 }
 
 fun <T : HttpClientEngineConfig> projectHttpClient(

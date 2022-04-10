@@ -9,4 +9,7 @@ actual class APIClient actual constructor() {
   actual val noAuthClient: HttpClient = projectHttpClient(Android, false)
   actual val authClient: HttpClient = projectHttpClient(Android, true)
   actual val dispatcher: CoroutineDispatcher = Dispatchers.Default
+  actual val host = BuildKonfig.host.ifBlank {
+    "http://10.0.2.2:8080"
+  }
 }

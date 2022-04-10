@@ -19,4 +19,8 @@ actual class APIClient actual constructor() {
       }
     }
   }
+
+  actual val host = BuildKonfig.host.ifBlank {
+    "http://localhost:8080"
+  }
 }

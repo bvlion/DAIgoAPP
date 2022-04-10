@@ -13,10 +13,10 @@ class API {
   private val job = SupervisorJob()
   private val scope = CoroutineScope(Dispatchers.Main + job)
 
-  fun cancel() = job.cancel()
+  fun cancel() = job.cancel("cancel")
 
   fun getRules(isPrivacyPolicy: Boolean, callback: (Rules) -> Unit) {
-    val url = BuildKonfig.host + if (isPrivacyPolicy) {
+    val url = apiClient.host + if (isPrivacyPolicy) {
       "/privacy_policy"
     } else {
       "/terms_of_use"
@@ -30,7 +30,7 @@ class API {
 
   fun getDaigo(target: String, callback: (DaiGo.GenerateResponse) -> Unit) {
     scope.launch(apiClient.dispatcher) {
-      val result = apiClient.authClient.get<DaiGo.GenerateResponse>("${BuildKonfig.host}/get-dai-go") {
+      val result = apiClient.authClient.get<DaiGo.GenerateResponse>("${apiClient.host}/get-dai-go") {
         parameter("target", target)
       }
       callback(result)
@@ -39,7 +39,7 @@ class API {
 
   fun postDaigo(word: String, daiGo: String, callback: (DaiGo.UpdateResponse) -> Unit) {
     scope.launch(apiClient.dispatcher) {
-      val result = apiClient.authClient.post<DaiGo.UpdateResponse>("${BuildKonfig.host}/upsert-dai-go") {
+      val result = apiClient.authClient.post<DaiGo.UpdateResponse>("${apiClient.host}/upsert-dai-go") {
         body = DaiGo.UpdateRequest(word, daiGo)
       }
       callback(result)
@@ -48,7 +48,7 @@ class API {
 
   fun getSamples(callback: (Samples) -> Unit) {
     scope.launch(apiClient.dispatcher) {
-      val result = apiClient.authClient.get<Samples>("${BuildKonfig.host}/get-samples")
+      val result = apiClient.authClient.get<Samples>("${apiClient.host}/get-samples")
       callback(result)
     }
   }

@@ -23,7 +23,11 @@ kotlin {
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0") {
+          version {
+            strictly("1.6.0-native-mt")
+          }
+        }
 
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
       }
@@ -66,7 +70,7 @@ android {
 buildkonfig {
   packageName = "net.ambitious.daigoapp"
   defaultConfigs {
-    buildConfigField(STRING, "host", System.getenv("HOST") ?: "http://10.0.2.2:8080")
+    buildConfigField(STRING, "host", System.getenv("HOST") ?: "")
     buildConfigField(STRING, "bearer", System.getenv("BEARER") ?: "test_test")
   }
 }
