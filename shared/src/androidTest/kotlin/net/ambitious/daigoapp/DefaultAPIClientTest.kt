@@ -5,11 +5,9 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.test.Test
+import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
-@ExperimentalCoroutinesApi
 class DefaultAPIClientTest : APIClientTest {
 
   private val job = SupervisorJob()
@@ -18,14 +16,14 @@ class DefaultAPIClientTest : APIClientTest {
   @Test
   override fun testHost() {
     val apiClient = APIClient()
-    assertEquals("http://localhost:8080", apiClient.host)
+    assertEquals("http://10.0.2.2:8080", apiClient.host)
   }
 
   @Test // See: https://httpbin.org/
   override fun testNoAuthClient() {
     val apiClient = APIClient()
-    runBlocking(newSingleThreadContext("testRunner")) {
-      val result = apiClient.noAuthClient.get<String>("http://httpbin.org/get?target=test")
+    runBlocking {
+      val result = apiClient.noAuthClient.get<String>("https://httpbin.org/get?target=test")
       val json = Json.parseToJsonElement(result).jsonObject
       val args = json["args"]?.jsonObject
       assertEquals("test", args?.get("target")?.jsonPrimitive?.content)
@@ -35,8 +33,8 @@ class DefaultAPIClientTest : APIClientTest {
   @Test // See: https://httpbin.org/
   override fun testAuthClient() {
     val apiClient = APIClient()
-    runBlocking(newSingleThreadContext("testRunner")) {
-      val result = apiClient.authClient.get<String>("http://httpbin.org/bearer")
+    runBlocking {
+      val result = apiClient.authClient.get<String>("https://httpbin.org/bearer")
       val json = Json.parseToJsonElement(result).jsonObject
       assertEquals("test_test", json["token"]?.jsonPrimitive?.content)
     }
@@ -45,15 +43,13 @@ class DefaultAPIClientTest : APIClientTest {
   @Test
   override fun testDispatcher() {
     val apiClient = APIClient()
-    runBlocking(newSingleThreadContext("testRunner")) {
-      scope.launch(newSingleThreadContext("testRunner")) {
+    runBlocking {
+      scope.launch(apiClient.dispatcher) {
         // same testAuthClient
-        val result = apiClient.authClient.get<String>("http://httpbin.org/bearer")
+        val result = apiClient.authClient.get<String>("https://httpbin.org/bearer")
         val json = Json.parseToJsonElement(result).jsonObject
         assertEquals("test_test", json["token"]?.jsonPrimitive?.content)
       }.join()
     }
-    // In the UnitTest, only a null check is performed because the ThreadContext is different.
-    assertNotNull(apiClient.dispatcher)
   }
 }
