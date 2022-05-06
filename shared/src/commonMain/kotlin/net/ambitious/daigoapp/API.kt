@@ -24,30 +24,28 @@ class API {
       "/terms_of_use"
     }
 
-    call({ apiClient.noAuthClient.get<Rules>(url) }) {
-      callback(it)
-    }
+    call({ apiClient.noAuthClient.get(url) }, callback)
   }
 
   fun getDaigo(target: String, callback: (Result<DaiGo.GenerateResponse>) -> Unit) =
-    call({ apiClient.authClient.get<DaiGo.GenerateResponse>("${apiClient.host}/get-dai-go") {
+    call({ apiClient.authClient.get("${apiClient.host}/get-dai-go") {
       parameter("target", target)
-    }}) {
-      callback(it)
-    }
+    }}, callback)
 
   fun postDaigo(word: String, daiGo: String, callback: (Result<DaiGo.UpdateResponse>) -> Unit) =
-    call({ apiClient.authClient.post<DaiGo.UpdateResponse>("${apiClient.host}/upsert-dai-go") }) {
-      callback(it)
-    }
+    call({ apiClient.authClient.post("${apiClient.host}/upsert-dai-go") {
+      body = DaiGo.UpdateRequest(word, daiGo)
+    }}, callback)
 
   fun getSamples(callback: (Result<Samples>) -> Unit) =
-    call({ apiClient.authClient.get<Samples>("${apiClient.host}/get-samples") }) {
-      callback(it)
-    }
+    call({ apiClient.authClient.get("${apiClient.host}/get-samples") }, callback)
 
-  fun <T> call(request: suspend () -> T, callback: (Result<T>) -> Unit): Job =
-    scope.launch(apiClient.dispatcher) {
+  fun <T> call(
+    request: suspend () -> T,
+    callback: (Result<T>) -> Unit,
+    dispatcher: CoroutineDispatcher = apiClient.dispatcher
+  ): Job =
+    scope.launch(dispatcher) {
       try {
         callback(Result.success(request()))
       } catch (e: Exception) {
