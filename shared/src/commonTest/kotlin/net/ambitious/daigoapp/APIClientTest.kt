@@ -1,6 +1,6 @@
 package net.ambitious.daigoapp
 
-interface APIClientTest {
+expect class APIClientTest {
 
     /** Check default host */
     fun testHost()
