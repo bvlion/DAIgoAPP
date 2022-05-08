@@ -23,9 +23,9 @@ kotlin {
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0") {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1") {
           version {
-            strictly("1.6.0-native-mt")
+            strictly("1.6.1-native-mt")
           }
         }
 
