@@ -15,25 +15,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
-import net.ambitious.daigoapp.API
 import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 import net.ambitious.daigoapp.call.Result
+import net.ambitious.daigoapp.domain.DaiGo
 
 @Composable
 fun InputArea(
-  input: MutableState<String>,
-  result: MutableState<String>,
-  loading: MutableState<Boolean>,
-  createButtonEnable: MutableState<Boolean>,
-  api: API,
-  errorDialog: MutableState<Result.ErrorDetail?> = remember { mutableStateOf(null) }
+  input: String,
+  result: Result<DaiGo.GenerateResponse>,
+  createButtonEnable: Boolean,
+  onTextChange: (String) -> Unit = {},
+  buttonClick: () -> Unit = {}
 ) {
+  val errorDialog: MutableState<Result.ErrorDetail?> = remember { mutableStateOf(null) }
   ErrorDialogCompose(errorDialog)
+  var resultText = ""
+
+  when (result) {
+    is Result.Success -> resultText = result.data.text
+    is Result.Failure -> errorDialog.value = result.err
+  }
 
   Column {
     Text(
-      result.value,
+      resultText,
       modifier = Modifier
         .padding(all = 16.dp)
         .fillMaxWidth(),
@@ -43,11 +49,8 @@ fun InputArea(
     )
 
     OutlinedTextField(
-      value = input.value,
-      onValueChange = {
-        input.value = it
-        createButtonEnable.value = it.isNotEmpty()
-      },
+      value = input,
+      onValueChange = onTextChange,
       label = { Text("D◯I 語") },
       modifier = Modifier
         .padding(horizontal = 16.dp)
@@ -59,22 +62,12 @@ fun InputArea(
         .padding(16.dp)
         .fillMaxWidth()
     ) {
-      Button(
-        {
-          loading.value = true
-          api.getDaigo(input.value) {
-            loading.value = false
-            when (it) {
-              is Result.Success -> result.value = it.data.text
-              is Result.Failure -> errorDialog.value = it.err
-            }
-          }
-        },
+      Button(onClick = buttonClick,
         Modifier
           .height(40.dp)
           .fillMaxWidth()
           .padding(horizontal = 56.dp),
-        enabled = createButtonEnable.value
+        enabled = createButtonEnable
       ) {
         Text("生成")
       }
@@ -92,8 +85,7 @@ fun InputArea(
 
 @Composable
 fun SampleArea(
-  input: MutableState<String>,
-  createButtonEnable: MutableState<Boolean>,
+  onTextChange: (String) -> Unit,
   words: List<String>
 ) {
   FlowRow(
@@ -106,8 +98,7 @@ fun SampleArea(
         backgroundColor = MaterialTheme.colors.onSurface,
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.clickable {
-          input.value = it
-          createButtonEnable.value = true
+          onTextChange(it)
         }
       ) {
         Text(
@@ -123,14 +114,9 @@ fun SampleArea(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun DefaultPreview() {
-  val input = remember { mutableStateOf("努力大事") }
-  val result = remember { mutableStateOf("DD") }
-  val loading = remember { mutableStateOf(true) }
-  val createButtonEnable = remember { mutableStateOf(false) }
-
   AppTheme {
-    SampleArea(input, createButtonEnable, sampleWords)
-//    InputArea(input, result, loading, createButtonEnable, API())
+//    SampleArea({}, sampleWords)
+    InputArea("努力大事", Result.success(DaiGo.GenerateResponse("DD")), true)
   }
 }
 
