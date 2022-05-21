@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +37,10 @@ class MainActivity : ComponentActivity() {
       val createButtonEnable = viewModel.createButtonEnable.collectAsState()
 
       AppTheme {
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colors.background
+        ) {
           AllViews(
             input.value,
             result.value,
@@ -44,6 +50,7 @@ class MainActivity : ComponentActivity() {
             { viewModel.setInputWord(it) },
             { viewModel.buttonClick() }
           )
+        }
       }
     }
   }

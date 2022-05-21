@@ -38,7 +38,7 @@ fun LoadingCompose(iSLoading: Boolean) {
         modifier = Modifier
           .fillMaxSize()
           .alpha(0.2f)
-          .background(Color.Black)
+          .background(MaterialTheme.colors.primary)
       )
       CircularProgressIndicator()
     }
