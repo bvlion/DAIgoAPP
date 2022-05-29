@@ -3,6 +3,7 @@ package net.ambitious.daigoapp
 import io.ktor.client.features.*
 import kotlinx.coroutines.launch
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.*
 import net.ambitious.daigoapp.call.Result
 import net.ambitious.daigoapp.domain.DaiGo
@@ -35,6 +36,7 @@ class API {
   fun postDaigo(word: String, daiGo: String, callback: (Result<DaiGo.UpdateResponse>) -> Unit) =
     call({ apiClient.authClient.post("${apiClient.host}/upsert-dai-go") {
       body = DaiGo.UpdateRequest(word, daiGo)
+      contentType(ContentType.Application.Json)
     }}, callback)
 
   fun getSamples(callback: (Result<Samples>) -> Unit) =

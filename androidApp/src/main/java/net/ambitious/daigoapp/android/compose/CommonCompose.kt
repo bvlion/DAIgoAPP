@@ -13,15 +13,14 @@ import androidx.compose.ui.graphics.Color
 import net.ambitious.daigoapp.call.Result
 
 @Composable
-fun ErrorDialogCompose(errorDialog: MutableState<Result.ErrorDetail?>) {
-  if (errorDialog.value != null) {
-    val err = errorDialog.value!!
+fun ErrorDialogCompose(err: Result.ErrorDetail?, dismiss: () -> Unit) {
+  if (err != null) {
     AlertDialog(
-      onDismissRequest = { errorDialog.value = null },
+      onDismissRequest = dismiss,
       title = { Text(err.title) },
       text = { Text(err.message) },
       confirmButton = {
-        TextButton(onClick = { errorDialog.value = null }) { Text("閉じる") }
+        TextButton(onClick = dismiss) { Text("閉じる") }
       }
     )
   }

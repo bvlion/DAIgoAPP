@@ -9,45 +9,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
-import net.ambitious.daigoapp.call.Result
-import net.ambitious.daigoapp.domain.DaiGo
 
 @Composable
 fun InputArea(
   input: String,
-  result: Result<DaiGo.GenerateResponse>,
   createButtonEnable: Boolean,
   onTextChange: (String) -> Unit = {},
   buttonClick: () -> Unit = {}
 ) {
-  val errorDialog: MutableState<Result.ErrorDetail?> = remember { mutableStateOf(null) }
-  ErrorDialogCompose(errorDialog)
-  var resultText = ""
-
-  when (result) {
-    is Result.Success -> resultText = result.data.text
-    is Result.Failure -> errorDialog.value = result.err
-  }
-
   Column {
-    Text(
-      resultText,
-      modifier = Modifier
-        .padding(all = 16.dp)
-        .fillMaxWidth(),
-      textAlign = TextAlign.Center,
-      fontSize = 32.sp,
-      fontWeight = FontWeight.Bold
-    )
-
     OutlinedTextField(
       value = input,
       onValueChange = onTextChange,
@@ -113,10 +88,10 @@ fun SampleArea(
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-fun DefaultPreview() {
+fun MainPreview() {
   AppTheme {
 //    SampleArea({}, sampleWords)
-    InputArea("努力大事", Result.success(DaiGo.GenerateResponse("DD")), true)
+    InputArea("努力大事", true)
   }
 }
 
