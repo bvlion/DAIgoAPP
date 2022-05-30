@@ -3,9 +3,7 @@ package net.ambitious.daigoapp.android
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +11,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.API
 import net.ambitious.daigoapp.call.Result
-import net.ambitious.daigoapp.domain.DaiGo
 
 @ExperimentalMaterialApi
 class MainViewModel : ViewModel() {

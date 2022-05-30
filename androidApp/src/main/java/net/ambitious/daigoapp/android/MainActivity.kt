@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import net.ambitious.daigoapp.android.compose.*
 import net.ambitious.daigoapp.android.ui.AppTheme
-import net.ambitious.daigoapp.call.Result
 
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
