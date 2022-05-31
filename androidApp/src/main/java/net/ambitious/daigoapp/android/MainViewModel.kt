@@ -37,6 +37,12 @@ class MainViewModel : ViewModel() {
   private val _errorDialog = MutableStateFlow<Result.ErrorDetail?>(null)
   val errorDialog = _errorDialog.asStateFlow()
 
+  private val _rules = MutableStateFlow("")
+  val rules = _rules.asStateFlow()
+
+  private val _isMenuShow = MutableStateFlow(false)
+  val isMenuShow = _isMenuShow.asStateFlow()
+
   val showProposal = mutableStateOf(false)
   val resultBottomSheet = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
@@ -59,6 +65,7 @@ class MainViewModel : ViewModel() {
             setInputWord(res, true)
             _result.value = res
           }
+          _isMenuShow.value = false
           scope.launch {
             resultBottomSheet.show()
           }
@@ -84,6 +91,28 @@ class MainViewModel : ViewModel() {
 
   fun dismissErrorDialog() {
     _errorDialog.value = null
+  }
+
+  fun showMenu(scope: CoroutineScope) {
+    _isMenuShow.value = true
+    scope.launch {
+      resultBottomSheet.show()
+    }
+  }
+
+  fun showRules(isPrivacyPolicy: Boolean) {
+    api.getRules(isPrivacyPolicy) {
+      when (it) {
+        is Result.Success -> it.data.text.let { res ->
+          _rules.value = res
+        }
+        is Result.Failure -> _errorDialog.value = it.err
+      }
+    }
+  }
+
+  fun dismissRules() {
+    _rules.value = ""
   }
 
   init {

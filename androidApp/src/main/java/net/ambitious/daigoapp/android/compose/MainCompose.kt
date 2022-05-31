@@ -16,11 +16,12 @@ import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @Composable
-fun InputArea(
+fun InputCompose(
   input: String,
   createButtonEnable: Boolean,
   onTextChange: (String) -> Unit = {},
-  buttonClick: () -> Unit = {}
+  buttonClick: () -> Unit = {},
+  showMenuClick: () -> Unit = {}
 ) {
   Column {
     OutlinedTextField(
@@ -46,20 +47,22 @@ fun InputArea(
       ) {
         Text("生成")
       }
-      Icon(
-        painterResource(R.drawable.ic_hamburger),
-        contentDescription = "menu",
-        Modifier
-          .requiredSize(36.dp)
-          .padding(end = 8.dp)
-          .align(Alignment.CenterEnd)
-      )
+      IconButton(
+        onClick = showMenuClick,
+        modifier = Modifier.requiredSize(36.dp).align(Alignment.CenterEnd)
+      ) {
+        Icon(
+          painterResource(R.drawable.ic_hamburger),
+          contentDescription = "menu",
+          Modifier.padding(end = 8.dp)
+        )
+      }
     }
   }
 }
 
 @Composable
-fun SampleArea(
+fun SamplesCompose(
   onTextChange: (String) -> Unit,
   words: List<String>
 ) {
@@ -91,7 +94,7 @@ fun SampleArea(
 fun MainPreview() {
   AppTheme {
 //    SampleArea({}, sampleWords)
-    InputArea("努力大事", true)
+    InputCompose("努力大事", true)
   }
 }
 

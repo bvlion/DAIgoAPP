@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import net.ambitious.daigoapp.android.compose.*
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @ExperimentalMaterialApi
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
 
   private lateinit var viewModel: MainViewModel
@@ -33,6 +35,8 @@ class MainActivity : ComponentActivity() {
       val loading = viewModel.loading.collectAsState()
       val createButtonEnable = viewModel.createButtonEnable.collectAsState()
       val proposal = viewModel.proposal.collectAsState()
+      val rules = viewModel.rules.collectAsState()
+      val isMenuShow = viewModel.isMenuShow.collectAsState()
 
       val scope = rememberCoroutineScope()
 
@@ -45,27 +49,39 @@ class MainActivity : ComponentActivity() {
             viewModel.dismissErrorDialog()
           }
 
+          RulesDialogCompose(rules.value) {
+            viewModel.dismissRules()
+          }
+
+          LoadingCompose(loading.value)
+
           ModalBottomSheetLayout(
             sheetState = viewModel.resultBottomSheet,
             sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             sheetContent = {
-              ResultModal(
-                viewModel.showProposal,
-                result.value,
-                input.value,
-                proposal.value,
-                { viewModel.setInputWord(it, true) },
-                { viewModel.proposalButtonClick() }
-              )
+              if (isMenuShow.value) {
+                MenuCompose {
+                  viewModel.showRules(it)
+                }
+              } else {
+                ResultModalCompose(
+                  viewModel.showProposal,
+                  result.value,
+                  input.value,
+                  proposal.value,
+                  { viewModel.setInputWord(it, true) },
+                  { viewModel.proposalButtonClick() }
+                )
+              }
             }
           ) {
             AllViews(
               input.value,
-              loading.value,
               createButtonEnable.value,
               words.value,
               { viewModel.setInputWord(it, false) },
-              { viewModel.buttonClick(scope) }
+              { viewModel.buttonClick(scope) },
+              { viewModel.showMenu(scope) }
             )
           }
         }
@@ -77,18 +93,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AllViews(
   input: String,
-  loading: Boolean,
   createButtonEnable: Boolean,
   words: List<String>,
   onTextChange: (String) -> Unit = {},
-  buttonClick: () -> Unit = {}
+  buttonClick: () -> Unit = {},
+  showMenuClick: () -> Unit = {}
 ) {
   Box(Modifier.fillMaxSize()) {
-    LoadingCompose(loading)
     Box(Modifier.align(Alignment.BottomCenter)) {
       Column {
-        SampleArea(onTextChange, words)
-        InputArea(input, createButtonEnable, onTextChange, buttonClick)
+        SamplesCompose(onTextChange, words)
+        InputCompose(input, createButtonEnable, onTextChange, buttonClick, showMenuClick)
       }
     }
   }
@@ -100,7 +115,6 @@ fun DefaultPreview() {
   AppTheme {
     AllViews(
       input = "努力大事",
-      loading = false,
       createButtonEnable = true,
       words = sampleWords
     )

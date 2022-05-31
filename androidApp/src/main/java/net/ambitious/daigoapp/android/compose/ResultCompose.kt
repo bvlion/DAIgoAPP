@@ -24,7 +24,7 @@ import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @Composable
-fun ResultModal(
+fun ResultModalCompose(
   showProposal: MutableState<Boolean>,
   resultText: String,
   inputText: String,
