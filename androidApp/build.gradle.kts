@@ -18,8 +18,17 @@ android {
     }
   }
   buildTypes {
-    getByName("release") {
-      isMinifyEnabled = false
+    release {
+      isMinifyEnabled = true
+      buildConfigField("String", "ADMOB_NATIVE_KEY", "\"${System.getenv("ANDROID_ADMOB_NATIVE_KEY")}\"")
+      manifestPlaceholders["admob_key"] = System.getenv("ANDROID_ADMOB_KEY") ?: ""
+    }
+    debug {
+      isDebuggable = true
+      applicationIdSuffix = ".debug"
+      versionNameSuffix = "-debug"
+      buildConfigField("String", "ADMOB_NATIVE_KEY", "\"ca-app-pub-3940256099942544/2247696110\"")
+      manifestPlaceholders["admob_key"] = "ca-app-pub-3940256099942544~3347511713"
     }
   }
   compileOptions {
@@ -45,7 +54,8 @@ android {
 dependencies {
   implementation(project(":shared"))
 
-  implementation("androidx.core:core-ktx:1.7.0")
+  implementation("androidx.core:core-ktx:1.8.0")
+  implementation("com.google.android.gms:play-services-ads-lite:21.0.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.1.1")!!)
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
