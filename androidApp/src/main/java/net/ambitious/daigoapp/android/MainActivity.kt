@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.MobileAds
 import net.ambitious.daigoapp.android.compose.*
 import net.ambitious.daigoapp.android.ui.AppTheme
 
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    MobileAds.initialize(this)
     viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
     setContent {
@@ -100,6 +102,7 @@ fun AllViews(
   showMenuClick: () -> Unit = {}
 ) {
   Box(Modifier.fillMaxSize()) {
+    NativeAdCompose()
     Box(Modifier.align(Alignment.BottomCenter)) {
       Column {
         SamplesCompose(onTextChange, words)
