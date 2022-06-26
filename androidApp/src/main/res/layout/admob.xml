@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <com.google.android.gms.ads.nativead.NativeAdView
+    android:id="@+id/nativeAdView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="16dp"
+    android:paddingHorizontal="40dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/carView"
+        android:layout_width="240dp"
+        android:layout_height="126dp"
+        app:cardCornerRadius="8dp"
+        android:layout_gravity="center"
+        app:cardElevation="0dp">
+        <com.google.android.gms.ads.nativead.MediaView
+          android:id="@+id/adImage"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+      </androidx.cardview.widget.CardView>
+
+      <TextView
+        android:id="@+id/adHeadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="12sp"
+        tools:text="Headlineをここに表示Headlineをここに表示します" />
+
+      <TextView
+        android:id="@+id/adBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        tools:text="詳細文をここに表示詳細文をここに表示詳細文をここに表示します" />
+
+      <TextView
+        android:id="@+id/advertiser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="13sp"
+        tools:text="広告アカウント" />
+
+    </LinearLayout>
+  </com.google.android.gms.ads.nativead.NativeAdView>
+</layout>

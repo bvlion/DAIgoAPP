@@ -49,6 +49,8 @@ android {
       excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
   }
+  viewBinding.isEnabled = true
+  dataBinding.isEnabled = true
 }
 
 dependencies {
@@ -56,18 +58,29 @@ dependencies {
 
   implementation("androidx.core:core-ktx:1.8.0")
   implementation("com.google.android.gms:play-services-ads-lite:21.0.0")
+  implementation("androidx.cardview:cardview:1.0.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.1.1")!!)
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+  implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
   implementation("androidx.activity:activity-compose:1.4.0")
+
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
+
+  implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
+  implementation("com.google.firebase:firebase-crashlytics-ktx")
+  implementation("com.google.firebase:firebase-analytics-ktx")
+
   testImplementation("junit:junit:4.13.2")
   androidTestImplementation("androidx.test.ext:junit:1.1.3")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
   androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
   debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 }
+
+apply(plugin = "com.google.gms.google-services")
+apply(plugin = "com.google.firebase.crashlytics")
 
 fun captureVersion(dependency: Dependency) = dependency.version

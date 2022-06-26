@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,8 +42,12 @@ fun MenuCompose(show: (Boolean) -> Unit) {
     }) {
       Text("レビューする")
     }
-    TextButton(onClick = { /*TODO*/ }) {
-      Text("お問い合わせ")
+    TextButton(onClick = {
+      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+        "https://docs.google.com/forms/d/e/1FAIpQLSecLnJGQu3C-24UMTcji_jnt7kRqgtTjQglKyA8xu6ILdnrDQ/viewform"
+      )))
+    }) {
+      Text("ご意見")
     }
   }
 }
@@ -54,6 +59,8 @@ fun RulesDialogCompose(
   dismissClick: () -> Unit = {}
 ) {
   if (rule.isNotEmpty()) {
+    val textColor = String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.onBackground.toArgb())
+    val backgroundColor = String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.background.toArgb())
     AlertDialog(
       onDismissRequest = dismissClick,
       text = {
@@ -62,7 +69,7 @@ fun RulesDialogCompose(
           factory = ::WebView,
           update = {
             it.loadData(
-              String.format(HTML_BODY, rule),
+              String.format(HTML_BODY, textColor, backgroundColor, rule),
               "text/html",
               "utf-8"
             )
@@ -86,9 +93,9 @@ const val HTML_BODY = """
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet" type="text/css" media="all" />
-  <style>.small { font-size: 70%% !important; }</style>
+  <style>.small { font-size: 70%% !important; color: %s; }</style>
 </head>
-<body>
+<body style="background-color: %s;">
   <div class="container">
     <div class="markdown-body small">
       %s
