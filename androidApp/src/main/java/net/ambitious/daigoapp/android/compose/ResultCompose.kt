@@ -2,20 +2,22 @@ package net.ambitious.daigoapp.android.compose
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -107,27 +109,57 @@ fun ProposalDialogCompose(
   buttonClick: () -> Unit = {}
 ) {
   if (iShow.value) {
+    val focusRequester = remember { FocusRequester() }
+    var textFieldValue by remember {
+      mutableStateOf(createTextFieldValue(resultText))
+    }
+
     AlertDialog(
       onDismissRequest = {
         iShow.value = false
       },
       title = { Text("「$inputText」は正しくは…") },
       text = {
-        OutlinedTextField(
-          value = resultText,
-          onValueChange = onTextChange,
-          modifier = Modifier.fillMaxWidth()
-        )
+        Column {
+          Text("", Modifier.height(8.dp)) // TODO use padding
+          OutlinedTextField(
+            value = textFieldValue,
+            onValueChange = {
+              if (it.text.matches("^[a-zA-Z]*\$".toRegex())) {
+                textFieldValue = createTextFieldValue(it.text.uppercase())
+                onTextChange(it.text.uppercase())
+              }
+                            },
+            modifier = Modifier
+              .fillMaxWidth()
+              .focusRequester(focusRequester),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+              imeAction = ImeAction.Done,
+              keyboardType = KeyboardType.Ascii
+            )
+          )
+        }
       },
       dismissButton = {
         TextButton({ iShow.value = false }) { Text("閉じる") }
       },
       confirmButton = {
         TextButton({ buttonClick() }) { Text("送信") }
-      }
+      },
+      shape = RoundedCornerShape(8.dp),
     )
+    LaunchedEffect(Unit) {
+      focusRequester.requestFocus()
+    }
   }
 }
+
+private fun createTextFieldValue(text: String) =
+  TextFieldValue(
+    text = text,
+    selection = TextRange(text.length)
+  )
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
