@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -30,6 +31,7 @@ fun InputCompose(
   showMenuClick: () -> Unit = {}
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
+  val focusManager = LocalFocusManager.current
   Column {
     OutlinedTextField(
       value = input,
@@ -41,7 +43,10 @@ fun InputCompose(
       singleLine = true,
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
       keyboardActions = KeyboardActions(
-        onDone = { keyboardController?.hide() }
+        onDone = {
+          keyboardController?.hide()
+          focusManager.clearFocus()
+        }
       )
     )
 
