@@ -5,10 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,6 +94,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+@ExperimentalComposeUiApi
 fun AllViews(
   input: String,
   createButtonEnable: Boolean,
@@ -101,19 +103,21 @@ fun AllViews(
   buttonClick: () -> Unit = {},
   showMenuClick: () -> Unit = {}
 ) {
-  Box(Modifier.fillMaxSize()) {
+  Column(
+    Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+    verticalArrangement = Arrangement.SpaceBetween
+  ) {
     NativeAdCompose()
-    Box(Modifier.align(Alignment.BottomCenter)) {
-      Column {
+    Column {
         SamplesCompose(onTextChange, words)
         InputCompose(input, createButtonEnable, onTextChange, buttonClick, showMenuClick)
-      }
     }
   }
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
+@ExperimentalComposeUiApi
 fun DefaultPreview() {
   AppTheme {
     AllViews(
