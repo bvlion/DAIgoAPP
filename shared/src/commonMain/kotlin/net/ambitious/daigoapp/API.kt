@@ -16,6 +16,8 @@ class API {
   private val job = SupervisorJob()
   private val scope = CoroutineScope(Dispatchers.Main + job)
 
+  val rulesUrl = "${apiClient.host}/app/rules?textColor=%s&backColor=%s&isPrivacyPolicy="
+
   fun cancel() = job.cancel("cancel")
 
   fun getRules(isPrivacyPolicy: Boolean, callback: (Result<Rules>) -> Unit) {
