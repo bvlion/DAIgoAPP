@@ -3,6 +3,7 @@ package net.ambitious.daigoapp.android.compose
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.webkit.WebView
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.DialogProperties
 import net.ambitious.daigoapp.android.BuildConfig
 import net.ambitious.daigoapp.android.ui.AppTheme
+import java.net.URLEncoder
 
 @Composable
 fun MenuCompose(show: (Boolean) -> Unit) {
@@ -55,24 +57,27 @@ fun MenuCompose(show: (Boolean) -> Unit) {
 @ExperimentalComposeUiApi
 @Composable
 fun RulesDialogCompose(
-  rule: String,
+  url: String,
   dismissClick: () -> Unit = {}
 ) {
-  if (rule.isNotEmpty()) {
-    val textColor = String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.onBackground.toArgb())
-    val backgroundColor = String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.background.toArgb())
+  if (url.isNotEmpty()) {
+    val textColor = URLEncoder.encode(
+      String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.onBackground.toArgb()),
+      "UTF-8"
+    )
+    val backgroundColor = URLEncoder.encode(
+      String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.background.toArgb()),
+      "UTF-8"
+    )
     AlertDialog(
       onDismissRequest = dismissClick,
       text = {
         AndroidView(
-          modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+          modifier = Modifier.fillMaxSize(),
           factory = ::WebView,
           update = {
-            it.loadData(
-              String.format(HTML_BODY, textColor, backgroundColor, rule),
-              "text/html",
-              "utf-8"
-            )
+            it.setBackgroundColor(Color.TRANSPARENT)
+            it.loadUrl(String.format(url, textColor, backgroundColor))
           }
         )
       },
@@ -81,31 +86,12 @@ fun RulesDialogCompose(
         TextButton(dismissClick) { Text("閉じる") }
       },
       shape = RoundedCornerShape(8.dp),
-      modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(16.dp)
+      modifier = Modifier.fillMaxSize().padding(16.dp)
     )
   }
 }
 
-const val HTML_BODY = """
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet" type="text/css" media="all" />
-  <style>.small { font-size: 70%% !important; color: %s; }</style>
-</head>
-<body style="background-color: %s;">
-  <div class="container">
-    <div class="markdown-body small">
-      %s
-    </div>
-  </div>
-</body>
-</html>
-"""
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @ExperimentalComposeUiApi
 @Composable
 fun MenuPreview() {
