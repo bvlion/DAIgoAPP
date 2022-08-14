@@ -4,11 +4,16 @@ import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
@@ -16,6 +21,7 @@ import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @Composable
+@ExperimentalComposeUiApi
 fun InputCompose(
   input: String,
   createButtonEnable: Boolean,
@@ -23,14 +29,20 @@ fun InputCompose(
   buttonClick: () -> Unit = {},
   showMenuClick: () -> Unit = {}
 ) {
+  val keyboardController = LocalSoftwareKeyboardController.current
   Column {
     OutlinedTextField(
       value = input,
       onValueChange = onTextChange,
-      label = { Text("D◯I 語") },
+      label = { Text("略したい言葉") },
       modifier = Modifier
         .padding(horizontal = 16.dp)
-        .fillMaxWidth()
+        .fillMaxWidth(),
+      singleLine = true,
+      keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+      keyboardActions = KeyboardActions(
+        onDone = { keyboardController?.hide() }
+      )
     )
 
     Box(
@@ -91,6 +103,7 @@ fun SamplesCompose(
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
+@ExperimentalComposeUiApi
 fun MainPreview() {
   AppTheme {
 //    SampleArea({}, sampleWords)
