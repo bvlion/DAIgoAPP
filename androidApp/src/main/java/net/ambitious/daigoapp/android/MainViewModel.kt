@@ -101,14 +101,7 @@ class MainViewModel : ViewModel() {
   }
 
   fun showRules(isPrivacyPolicy: Boolean) {
-    api.getRules(isPrivacyPolicy) {
-      when (it) {
-        is Result.Success -> it.data.text.let { res ->
-          _rules.value = res
-        }
-        is Result.Failure -> _errorDialog.value = it.err
-      }
-    }
+    _rules.value = "${api.rulesUrl}$isPrivacyPolicy"
   }
 
   fun dismissRules() {
