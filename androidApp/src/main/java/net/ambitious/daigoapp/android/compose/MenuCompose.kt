@@ -3,13 +3,18 @@ package net.ambitious.daigoapp.android.compose
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -61,6 +66,7 @@ fun RulesDialogCompose(
   dismissClick: () -> Unit = {}
 ) {
   if (url.isNotEmpty()) {
+    val loading = remember { mutableStateOf(true) }
     val textColor = URLEncoder.encode(
       String.format("#%06X", 0xFFFFFF and MaterialTheme.colors.onBackground.toArgb()),
       "UTF-8"
@@ -72,14 +78,28 @@ fun RulesDialogCompose(
     AlertDialog(
       onDismissRequest = dismissClick,
       text = {
-        AndroidView(
-          modifier = Modifier.fillMaxSize(),
-          factory = ::WebView,
-          update = {
-            it.setBackgroundColor(Color.TRANSPARENT)
-            it.loadUrl(String.format(url, textColor, backgroundColor))
+        Box(
+          Modifier.fillMaxSize(),
+          contentAlignment = Alignment.Center
+        ) {
+          if (loading.value) {
+            CircularProgressIndicator()
           }
-        )
+          AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = ::WebView,
+            update = {
+              it.setBackgroundColor(Color.TRANSPARENT)
+              it.loadUrl(String.format(url, textColor, backgroundColor))
+              it.webViewClient = object : WebViewClient() {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                  super.onPageStarted(view, url, favicon)
+                  loading.value = false
+                }
+              }
+            }
+          )
+        }
       },
       properties = DialogProperties(usePlatformDefaultWidth = false),
       confirmButton = {
