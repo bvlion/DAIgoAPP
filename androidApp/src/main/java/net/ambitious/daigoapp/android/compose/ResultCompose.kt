@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.ambitious.daigoapp.android.BuildConfig
 import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 
@@ -88,7 +89,7 @@ fun ResultModalCompose(
       TextButton({
         val sendIntent = Intent().apply {
           action = Intent.ACTION_SEND
-          putExtra(Intent.EXTRA_TEXT, "$appName が「$inputText」を「$resultText」と変換しました！\nあなたも試してみよう☆")
+          putExtra(Intent.EXTRA_TEXT, "$appName が「$inputText」を「$resultText」と変換しました！\nあなたも試してみよう☆\nhttps://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
           type = "text/plain"
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
