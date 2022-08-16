@@ -136,7 +136,7 @@ fun ProposalDialogCompose(
             singleLine = true,
             keyboardOptions = KeyboardOptions(
               imeAction = ImeAction.Done,
-              keyboardType = KeyboardType.Ascii
+              keyboardType = KeyboardType.Password
             )
           )
         }
