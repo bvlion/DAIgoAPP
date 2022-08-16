@@ -3,6 +3,7 @@ package net.ambitious.daigoapp.android
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.android.compose.*
 import net.ambitious.daigoapp.android.ui.AppTheme
 
@@ -57,6 +59,12 @@ class MainActivity : ComponentActivity() {
           }
 
           LoadingCompose(loading.value)
+
+          BackHandler(viewModel.resultBottomSheet.isVisible) {
+            scope.launch {
+              viewModel.resultBottomSheet.hide()
+            }
+          }
 
           ModalBottomSheetLayout(
             sheetState = viewModel.resultBottomSheet,
@@ -104,7 +112,9 @@ fun AllViews(
   showMenuClick: () -> Unit = {}
 ) {
   Column(
-    Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+    Modifier
+      .fillMaxSize()
+      .verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.SpaceBetween
   ) {
     NativeAdCompose()
