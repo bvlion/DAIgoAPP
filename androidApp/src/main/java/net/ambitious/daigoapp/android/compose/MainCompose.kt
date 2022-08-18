@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -36,6 +38,13 @@ fun InputCompose(
     OutlinedTextField(
       value = input,
       onValueChange = onTextChange,
+      trailingIcon = {
+        Icon(
+          Icons.Default.Clear,
+          contentDescription = "clear text",
+          modifier = Modifier.clickable { onTextChange("") }
+        )
+      },
       label = { Text("略したい言葉") },
       modifier = Modifier
         .padding(horizontal = 16.dp)
