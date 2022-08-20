@@ -1,6 +1,7 @@
 plugins {
   id("com.android.application")
   kotlin("android")
+  id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -10,11 +11,19 @@ android {
     minSdk = 26
     targetSdk = 31
     versionCode = 1
-    versionName = "1.0"
+    versionName = "1.0.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = true
+    }
+  }
+  signingConfigs {
+    create("release") {
+      keyAlias = System.getenv("KEYSTORE_ALIAS")
+      keyPassword = System.getenv("KEYSTORE_PASSWORD")
+      storeFile = file("../release.keystore")
+      storePassword = System.getenv("KEYSTORE_PASSWORD")
     }
   }
   buildTypes {
@@ -22,6 +31,14 @@ android {
       isMinifyEnabled = true
       buildConfigField("String", "ADMOB_NATIVE_KEY", "\"${System.getenv("ANDROID_ADMOB_NATIVE_KEY")}\"")
       manifestPlaceholders["admob_key"] = System.getenv("ANDROID_ADMOB_KEY") ?: ""
+      signingConfig = signingConfigs.getByName("release")
+      firebaseAppDistribution {
+        groups = "developer"
+        artifactType = "APK"
+        artifactPath = "androidApp/build/outputs/apk/release/androidApp-release.apk"
+        releaseNotesFile = "note.txt"
+      }
+      proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
     }
     debug {
       isDebuggable = true
@@ -57,15 +74,15 @@ dependencies {
   implementation(project(":shared"))
 
   implementation("androidx.core:core-ktx:1.8.0")
-  implementation("com.google.android.gms:play-services-ads-lite:21.0.0")
+  implementation("com.google.android.gms:play-services-ads-lite:21.1.0")
   implementation("androidx.cardview:cardview:1.0.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.1.1")!!)
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-  implementation("androidx.activity:activity-compose:1.4.0")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+  implementation("androidx.activity:activity-compose:1.5.1")
 
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
 

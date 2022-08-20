@@ -1,0 +1,2 @@
+-keep class net.ambitious.daigoapp.domain.** { *; }
+-keep class net.ambitious.daigoapp.call.** { *; }

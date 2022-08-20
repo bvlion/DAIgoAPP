@@ -1,0 +1,50 @@
+name: Android Main Branch CI
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '**.kt'
+      - '**.gradle'
+      - '**.xml'
+      - '.github/workflows/main.yaml'
+
+env:
+  ANDROID_ADMOB_KEY: ${{ secrets.ANDROID_ADMOB_KEY }}
+  ANDROID_ADMOB_NATIVE_KEY: ${{ secrets.ANDROID_ADMOB_NATIVE_KEY }}
+  GOOGLE_SERVICES_JSON: ${{ secrets.ANDROID_GOOGLE_SERVICES_JSON_64 }}
+  KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
+  KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set config files
+          echo $GOOGLE_SERVICES_JSON | base64 -d > androidApp/src/release/google-services.json
+
+      - name: Run Build
+        run: ./gradlew assembleRelease
+
+      - name: Create note
+        run: git log -1 > note.txt
+
+      - name: Upload Firebase App Distribution
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: ./gradlew appDistributionUploadRelease
