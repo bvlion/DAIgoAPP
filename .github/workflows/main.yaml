@@ -17,6 +17,8 @@ env:
   GOOGLE_SERVICES_JSON: ${{ secrets.ANDROID_GOOGLE_SERVICES_JSON_64 }}
   KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
   KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  HOST: ${{ secrets.HOST }}
+  BEARER: ${{ secrets.BEARER }}
 
 jobs:
   apk:
