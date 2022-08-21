@@ -5,9 +5,10 @@ on:
     branches:
       - 'main'
     paths:
-      - '**.kt'
-      - '**.gradle'
-      - '**.xml'
+      - 'androidApp/**.kt'
+      - 'androidApp/**.xml'
+      - 'androidApp/proguard-rules.pro'
+      - '**.gradle.kts'
       - '.github/workflows/main.yaml'
 
 env:
@@ -36,7 +37,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Set config files
-          echo $GOOGLE_SERVICES_JSON | base64 -d > androidApp/src/release/google-services.json
+        run: echo $GOOGLE_SERVICES_JSON | base64 -d > androidApp/src/release/google-services.json
 
       - name: Run Build
         run: ./gradlew assembleRelease
