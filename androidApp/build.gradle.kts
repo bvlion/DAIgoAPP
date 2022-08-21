@@ -81,8 +81,7 @@ dependencies {
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-  implementation("androidx.activity:activity-compose:1.5.1")
+  implementation("androidx.activity:activity-compose:1.4.0")
 
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
 
