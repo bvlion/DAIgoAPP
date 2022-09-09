@@ -23,13 +23,13 @@ kotlin {
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1") {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
           version {
             strictly("1.6.1-native-mt")
           }
         }
 
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
       }
     }
     val commonTest by getting {
