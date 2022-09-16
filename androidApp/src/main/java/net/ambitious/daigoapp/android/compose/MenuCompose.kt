@@ -31,30 +31,42 @@ import java.net.URLEncoder
 fun MenuCompose(show: (Boolean) -> Unit) {
   val context = LocalContext.current
   Column(Modifier.fillMaxWidth().padding(16.dp)) {
-    TextButton(onClick = { show(false) }) {
-      Text("利用規約")
+    TextButton(
+      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      onClick = { show(false) }
+    ) {
+      Text(modifier = Modifier.fillMaxWidth(), text = "利用規約")
     }
-    TextButton(onClick = { show(true) }) {
-      Text("プライバシーポリシー")
+    TextButton(
+      modifier = Modifier.fillMaxWidth(),
+      onClick = { show(true) }
+    ) {
+      Text(modifier = Modifier.fillMaxWidth(), text = "プライバシーポリシー")
     }
-    TextButton(onClick = {
-      context.startActivity(Intent(
-        Intent.ACTION_VIEW,
-        Uri.parse(try {
-          "market://details?id=${BuildConfig.APPLICATION_ID}"
-        } catch (_: ActivityNotFoundException) {
-          "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
-        })
-      ))
-    }) {
-      Text("レビューする")
+    TextButton(
+      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      onClick = {
+        context.startActivity(Intent(
+          Intent.ACTION_VIEW,
+          Uri.parse(try {
+            "market://details?id=${BuildConfig.APPLICATION_ID}"
+          } catch (_: ActivityNotFoundException) {
+            "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+          })
+        ))
+      }
+    ) {
+      Text(modifier = Modifier.fillMaxWidth(), text = "レビューする")
     }
-    TextButton(onClick = {
-      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
-        "https://docs.google.com/forms/d/e/1FAIpQLSecLnJGQu3C-24UMTcji_jnt7kRqgtTjQglKyA8xu6ILdnrDQ/viewform"
-      )))
-    }) {
-      Text("ご意見")
+    TextButton(
+      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      onClick = {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+          "https://docs.google.com/forms/d/e/1FAIpQLSecLnJGQu3C-24UMTcji_jnt7kRqgtTjQglKyA8xu6ILdnrDQ/viewform"
+        )))
+      }
+    ) {
+      Text(modifier = Modifier.fillMaxWidth(), text = "ご意見")
     }
   }
 }
