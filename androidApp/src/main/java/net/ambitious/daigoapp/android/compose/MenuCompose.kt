@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,18 +22,30 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.DialogProperties
 import net.ambitious.daigoapp.android.BuildConfig
+import net.ambitious.daigoapp.android.data.ProjectDataStore
 import net.ambitious.daigoapp.android.ui.AppTheme
+import net.ambitious.daigoapp.android.ui.noRippleClickable
 import java.net.URLEncoder
 
 @Composable
-fun MenuCompose(show: (Boolean) -> Unit) {
+fun MenuCompose(
+  viewMode: ProjectDataStore.ViewMode,
+  saveViewMode: (ProjectDataStore.ViewMode) -> Unit,
+  show: (Boolean) -> Unit
+) {
   val context = LocalContext.current
-  Column(Modifier.fillMaxWidth().padding(16.dp)) {
+  Column(
+    Modifier
+      .fillMaxWidth()
+      .padding(16.dp)) {
     TextButton(
-      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      modifier = Modifier
+        .fillMaxWidth()
+        .align(Alignment.Start),
       onClick = { show(false) }
     ) {
       Text(modifier = Modifier.fillMaxWidth(), text = "利用規約")
@@ -44,7 +57,9 @@ fun MenuCompose(show: (Boolean) -> Unit) {
       Text(modifier = Modifier.fillMaxWidth(), text = "プライバシーポリシー")
     }
     TextButton(
-      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      modifier = Modifier
+        .fillMaxWidth()
+        .align(Alignment.Start),
       onClick = {
         context.startActivity(Intent(
           Intent.ACTION_VIEW,
@@ -59,7 +74,9 @@ fun MenuCompose(show: (Boolean) -> Unit) {
       Text(modifier = Modifier.fillMaxWidth(), text = "レビューする")
     }
     TextButton(
-      modifier = Modifier.fillMaxWidth().align(Alignment.Start),
+      modifier = Modifier
+        .fillMaxWidth()
+        .align(Alignment.Start),
       onClick = {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
           "https://docs.google.com/forms/d/e/1FAIpQLSecLnJGQu3C-24UMTcji_jnt7kRqgtTjQglKyA8xu6ILdnrDQ/viewform"
@@ -67,6 +84,30 @@ fun MenuCompose(show: (Boolean) -> Unit) {
       }
     ) {
       Text(modifier = Modifier.fillMaxWidth(), text = "ご意見")
+    }
+    Column(Modifier.padding(top = 8.dp)) {
+      Text(
+        fontSize = 14.sp,
+        text = "Color"
+      )
+      Row {
+        ProjectDataStore.ViewMode.values().forEach { mode ->
+          RadioButton(
+            selected = (mode == viewMode),
+            onClick = { saveViewMode(mode) }
+          )
+          Text(
+            modifier = Modifier.padding(top = 14.dp).noRippleClickable { saveViewMode(mode) },
+            fontSize = 15.sp,
+            style = MaterialTheme.typography.body1.merge(),
+            text = when (mode) {
+              ProjectDataStore.ViewMode.DEFAULT -> "システム"
+              ProjectDataStore.ViewMode.LIGHT -> "ライト"
+              ProjectDataStore.ViewMode.DARK -> "ダーク"
+            }
+          )
+        }
+      }
     }
   }
 }
@@ -118,7 +159,9 @@ fun RulesDialogCompose(
         TextButton(dismissClick) { Text("閉じる") }
       },
       shape = RoundedCornerShape(8.dp),
-      modifier = Modifier.fillMaxSize().padding(16.dp)
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
     )
   }
 }
@@ -128,6 +171,6 @@ fun RulesDialogCompose(
 @Composable
 fun MenuPreview() {
   AppTheme {
-    RulesDialogCompose("<h1>土台</h1>利用規約です")
+    MenuCompose(ProjectDataStore.ViewMode.DEFAULT, {}) {}
   }
 }

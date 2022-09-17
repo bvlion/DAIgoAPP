@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.android.compose.*
+import net.ambitious.daigoapp.android.data.ProjectDataStore
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @ExperimentalMaterialApi
@@ -42,10 +44,15 @@ class MainActivity : ComponentActivity() {
       val proposal = viewModel.proposal.collectAsState()
       val rules = viewModel.rules.collectAsState()
       val isMenuShow = viewModel.isMenuShow.collectAsState()
+      val viewMode = viewModel.viewMode.collectAsState()
 
       val scope = rememberCoroutineScope()
 
-      AppTheme {
+      AppTheme(when (viewMode.value) {
+        ProjectDataStore.ViewMode.DEFAULT -> isSystemInDarkTheme()
+        ProjectDataStore.ViewMode.LIGHT -> false
+        ProjectDataStore.ViewMode.DARK -> true
+      }) {
         Surface(
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colors.background
@@ -71,7 +78,9 @@ class MainActivity : ComponentActivity() {
             sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             sheetContent = {
               if (isMenuShow.value) {
-                MenuCompose {
+                MenuCompose(viewMode.value, {
+                  viewModel.setViewMode(it)
+                }) {
                   viewModel.showRules(it)
                 }
               } else {

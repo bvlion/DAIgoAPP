@@ -10,7 +10,7 @@ android {
     applicationId = "net.ambitious.daigoapp.android"
     minSdk = 26
     targetSdk = 31
-    versionCode = 1
+    versionCode = 3
     versionName = "1.0.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -81,6 +81,7 @@ dependencies {
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+  implementation("androidx.datastore:datastore-preferences:1.0.0")
 
   @Suppress("GradleDependency") // WIP
   implementation("androidx.activity:activity-compose:1.4.0")

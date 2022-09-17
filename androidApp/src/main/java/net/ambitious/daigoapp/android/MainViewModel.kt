@@ -1,20 +1,24 @@
 package net.ambitious.daigoapp.android
 
+import android.app.Application
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.API
+import net.ambitious.daigoapp.android.data.ProjectDataStore
 import net.ambitious.daigoapp.call.Result
 
 @ExperimentalMaterialApi
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
   private val api = API()
+  private val dataStore = ProjectDataStore.getDataStore(getApplication<Application>().applicationContext)
 
   private val _words = MutableStateFlow(emptyList<String>())
   val words = _words.asStateFlow()
@@ -45,6 +49,9 @@ class MainViewModel : ViewModel() {
 
   val showProposal = mutableStateOf(false)
   val resultBottomSheet = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
+
+  private val _viewMode = MutableStateFlow(ProjectDataStore.ViewMode.DEFAULT)
+  val viewMode = _viewMode.asStateFlow()
 
   fun setInputWord(input: String, isProposal: Boolean) {
     if (isProposal) {
@@ -113,6 +120,18 @@ class MainViewModel : ViewModel() {
       if (it is Result.Success) {
         _words.value = it.data.samples
       }
+    }
+    viewModelScope.launch {
+      dataStore.getViewMode.collect {
+        _viewMode.value = it
+      }
+    }
+  }
+
+  fun setViewMode(viewMode: ProjectDataStore.ViewMode) {
+    _viewMode.value = viewMode
+    viewModelScope.launch {
+      dataStore.setViewMode(viewMode)
     }
   }
 
