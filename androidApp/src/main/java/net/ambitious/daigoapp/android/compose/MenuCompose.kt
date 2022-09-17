@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -26,15 +25,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.DialogProperties
 import net.ambitious.daigoapp.android.BuildConfig
-import net.ambitious.daigoapp.android.data.ProjectDataStore
+import net.ambitious.daigoapp.android.data.AppDataStore
 import net.ambitious.daigoapp.android.ui.AppTheme
 import net.ambitious.daigoapp.android.ui.noRippleClickable
 import java.net.URLEncoder
 
 @Composable
 fun MenuCompose(
-  viewMode: ProjectDataStore.ViewMode,
-  saveViewMode: (ProjectDataStore.ViewMode) -> Unit,
+  viewMode: AppDataStore.ViewMode,
+  saveViewMode: (AppDataStore.ViewMode) -> Unit,
   show: (Boolean) -> Unit
 ) {
   val context = LocalContext.current
@@ -91,7 +90,7 @@ fun MenuCompose(
         text = "Color"
       )
       Row {
-        ProjectDataStore.ViewMode.values().forEach { mode ->
+        AppDataStore.ViewMode.values().forEach { mode ->
           RadioButton(
             selected = (mode == viewMode),
             onClick = { saveViewMode(mode) }
@@ -101,9 +100,9 @@ fun MenuCompose(
             fontSize = 15.sp,
             style = MaterialTheme.typography.body1.merge(),
             text = when (mode) {
-              ProjectDataStore.ViewMode.DEFAULT -> "システム"
-              ProjectDataStore.ViewMode.LIGHT -> "ライト"
-              ProjectDataStore.ViewMode.DARK -> "ダーク"
+              AppDataStore.ViewMode.DEFAULT -> "システム"
+              AppDataStore.ViewMode.LIGHT -> "ライト"
+              AppDataStore.ViewMode.DARK -> "ダーク"
             }
           )
         }
@@ -171,6 +170,6 @@ fun RulesDialogCompose(
 @Composable
 fun MenuPreview() {
   AppTheme {
-    MenuCompose(ProjectDataStore.ViewMode.DEFAULT, {}) {}
+    MenuCompose(AppDataStore.ViewMode.DEFAULT, {}) {}
   }
 }

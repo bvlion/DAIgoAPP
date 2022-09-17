@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.android.compose.*
-import net.ambitious.daigoapp.android.data.ProjectDataStore
+import net.ambitious.daigoapp.android.data.AppDataStore
 import net.ambitious.daigoapp.android.ui.AppTheme
 
 @ExperimentalMaterialApi
@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
       val scope = rememberCoroutineScope()
 
       AppTheme(when (viewMode.value) {
-        ProjectDataStore.ViewMode.DEFAULT -> isSystemInDarkTheme()
-        ProjectDataStore.ViewMode.LIGHT -> false
-        ProjectDataStore.ViewMode.DARK -> true
+        AppDataStore.ViewMode.DEFAULT -> isSystemInDarkTheme()
+        AppDataStore.ViewMode.LIGHT -> false
+        AppDataStore.ViewMode.DARK -> true
       }) {
         Surface(
           modifier = Modifier.fillMaxSize(),

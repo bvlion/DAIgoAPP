@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.API
-import net.ambitious.daigoapp.android.data.ProjectDataStore
+import net.ambitious.daigoapp.android.data.AppDataStore
 import net.ambitious.daigoapp.call.Result
 
 @ExperimentalMaterialApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
   private val api = API()
-  private val dataStore = ProjectDataStore.getDataStore(getApplication<Application>().applicationContext)
+  private val dataStore = AppDataStore.getDataStore(getApplication<Application>().applicationContext)
 
   private val _words = MutableStateFlow(emptyList<String>())
   val words = _words.asStateFlow()
@@ -50,7 +50,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
   val showProposal = mutableStateOf(false)
   val resultBottomSheet = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
-  private val _viewMode = MutableStateFlow(ProjectDataStore.ViewMode.DEFAULT)
+  private val _viewMode = MutableStateFlow(AppDataStore.ViewMode.DEFAULT)
   val viewMode = _viewMode.asStateFlow()
 
   fun setInputWord(input: String, isProposal: Boolean) {
@@ -128,7 +128,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
   }
 
-  fun setViewMode(viewMode: ProjectDataStore.ViewMode) {
+  fun setViewMode(viewMode: AppDataStore.ViewMode) {
     _viewMode.value = viewMode
     viewModelScope.launch {
       dataStore.setViewMode(viewMode)
