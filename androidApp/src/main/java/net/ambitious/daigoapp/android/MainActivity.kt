@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
       val rules = viewModel.rules.collectAsState()
       val isMenuShow = viewModel.isMenuShow.collectAsState()
       val viewMode = viewModel.viewMode.collectAsState()
+      val histories = viewModel.histories.collectAsState()
 
       val scope = rememberCoroutineScope()
 
@@ -65,6 +66,10 @@ class MainActivity : ComponentActivity() {
             viewModel.dismissRules()
           }
 
+          HistoryDialogCompose(histories.value) {
+            viewModel.setHistoryShow(false)
+          }
+
           LoadingCompose(loading.value)
 
           BackHandler(viewModel.resultBottomSheet.isVisible) {
@@ -78,11 +83,12 @@ class MainActivity : ComponentActivity() {
             sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             sheetContent = {
               if (isMenuShow.value) {
-                MenuCompose(viewMode.value, {
-                  viewModel.setViewMode(it)
-                }) {
-                  viewModel.showRules(it)
-                }
+                MenuCompose(
+                  viewMode.value,
+                  { viewModel.setViewMode(it) },
+                  { viewModel.showRules(it) },
+                  { viewModel.setHistoryShow(true) }
+                )
               } else {
                 ResultModalCompose(
                   viewModel.showProposal,

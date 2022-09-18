@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -60,6 +61,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
   private val _viewMode = MutableStateFlow(AppDataStore.ViewMode.DEFAULT)
   val viewMode = _viewMode.asStateFlow()
+
+  private val _histories = MutableStateFlow<List<History>?>(null)
+  val histories = _histories.asStateFlow()
 
   fun setInputWord(input: String, isProposal: Boolean) {
     if (isProposal) {
@@ -141,6 +145,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     _viewMode.value = viewMode
     viewModelScope.launch {
       dataStore.setViewMode(viewMode)
+    }
+  }
+
+  fun setHistoryShow(isShow: Boolean) {
+    if (isShow) {
+      viewModelScope.launch(Dispatchers.IO) {
+        _histories.value = db.historyDao().getAll()
+      }
+    } else {
+      _histories.value = null
     }
   }
 
