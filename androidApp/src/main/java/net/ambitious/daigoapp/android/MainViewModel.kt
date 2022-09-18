@@ -7,18 +7,26 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.API
 import net.ambitious.daigoapp.android.data.AppDataStore
+import net.ambitious.daigoapp.android.data.AppDatabase
+import net.ambitious.daigoapp.android.data.History
 import net.ambitious.daigoapp.call.Result
 
 @ExperimentalMaterialApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
   private val api = API()
   private val dataStore = AppDataStore.getDataStore(getApplication<Application>().applicationContext)
+  private val db = Room.databaseBuilder(
+    getApplication<Application>().applicationContext,
+    AppDatabase::class.java,
+    "abbreviation-db"
+  ).build()
 
   private val _words = MutableStateFlow(emptyList<String>())
   val words = _words.asStateFlow()
@@ -71,6 +79,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
           it.data.text.let { res ->
             setInputWord(res, true)
             _result.value = res
+            db.historyDao().insert(History(text = input.value, abbreviation = res))
           }
           _isMenuShow.value = false
           scope.launch {

@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   id("com.google.firebase.appdistribution")
+  kotlin("kapt")
 }
 
 android {
@@ -81,7 +82,10 @@ dependencies {
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+
   implementation("androidx.datastore:datastore-preferences:1.0.0")
+  val roomVersion = captureVersion(implementation("androidx.room:room-runtime:2.4.3")!!)
+  kapt("androidx.room:room-compiler:$roomVersion")
 
   @Suppress("GradleDependency") // WIP
   implementation("androidx.activity:activity-compose:1.4.0")
