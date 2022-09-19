@@ -3,6 +3,7 @@ plugins {
   kotlin("android")
   id("com.google.firebase.appdistribution")
   kotlin("kapt")
+  id("com.github.triplet.play")
 }
 
 android {
@@ -11,7 +12,7 @@ android {
     applicationId = "net.ambitious.daigoapp.android"
     minSdk = 26
     targetSdk = 31
-    versionCode = 3
+    versionCode = 5
     versionName = "1.0.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -107,3 +108,8 @@ apply(plugin = "com.google.gms.google-services")
 apply(plugin = "com.google.firebase.crashlytics")
 
 fun captureVersion(dependency: Dependency) = dependency.version
+
+play {
+  track.set("production")
+  serviceAccountCredentials.set(file(("../google-play-service.json")))
+}

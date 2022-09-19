@@ -1,0 +1,57 @@
+name: Android Release CI
+
+on:
+  release:
+    types: [published]
+
+env:
+  ANDROID_ADMOB_KEY: ${{ secrets.ANDROID_ADMOB_KEY }}
+  ANDROID_ADMOB_NATIVE_KEY: ${{ secrets.ANDROID_ADMOB_NATIVE_KEY }}
+  GOOGLE_SERVICES_JSON: ${{ secrets.ANDROID_GOOGLE_SERVICES_JSON_64 }}
+  KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
+  KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  HOST: ${{ secrets.HOST }}
+  BEARER: ${{ secrets.BEARER }}
+  GOOGLE_PLAY_SERVICE_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_JSON }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set config files
+        run: echo $GOOGLE_SERVICES_JSON | base64 -d > androidApp/src/release/google-services.json
+
+      - name: Run Build
+        run: ./gradlew bundleRelease
+
+      - name: Set publisher files
+        run: echo GOOGLE_PLAY_SERVICE_JSON | base64 -d > google-play-service.json
+
+      - name: Run Release
+        run: ./gradlew publishBundle
+
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
+          username: GHA_RELEASE
+          icon_emoji: ':sunglasses:'
+          channel: '#略語generator'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
