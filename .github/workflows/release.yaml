@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew bundleRelease
 
       - name: Set publisher files
-        run: echo GOOGLE_PLAY_SERVICE_JSON | base64 -d > google-play-service.json
+        run: echo $GOOGLE_PLAY_SERVICE_JSON | base64 -d > google-play-service.json
 
       - name: Run Release
         run: ./gradlew publishBundle
