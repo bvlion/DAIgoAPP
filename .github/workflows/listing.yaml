@@ -1,0 +1,34 @@
+name: Android Main Branch CI
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'androidApp/src/main/play/listings/ja-JP/**.txt'
+      - 'androidApp/src/main/play/listings/ja-JP/graphics/**.png'
+
+env:
+  GOOGLE_PLAY_SERVICE_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_JSON }}
+
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set publisher files
+        run: echo GOOGLE_PLAY_SERVICE_JSON | base64 -d > google-play-service.json
+
+      - name: Run Release
+        run: ./gradlew publishListing
+
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
+          username: GHA_LISTING
+          icon_emoji: ':smiling_face_with_3_hearts:'
+          channel: '#略語generator'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
