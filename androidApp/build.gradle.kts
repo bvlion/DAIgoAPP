@@ -89,7 +89,7 @@ dependencies {
   kapt("androidx.room:room-compiler:$roomVersion")
 
   @Suppress("GradleDependency") // WIP
-  implementation("androidx.activity:activity-compose:1.4.0")
+  implementation("androidx.activity:activity-compose:1.6.0")
 
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
 
