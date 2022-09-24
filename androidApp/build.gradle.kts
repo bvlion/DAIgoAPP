@@ -111,5 +111,5 @@ fun captureVersion(dependency: Dependency) = dependency.version
 
 play {
   track.set("production")
-  serviceAccountCredentials.set(file(("../google-play-service.json")))
+  serviceAccountCredentials.set(file("../google-play-service.json"))
 }

@@ -1,4 +1,4 @@
-name: Android Main Branch CI
+name: Android Listing CI
 
 on:
   push:
