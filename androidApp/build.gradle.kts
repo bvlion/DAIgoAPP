@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-  compileSdk = 31
+  compileSdk = 33
   defaultConfig {
     applicationId = "net.ambitious.daigoapp.android"
     minSdk = 26
-    targetSdk = 31
+    targetSdk = 33
     versionCode = 5
     versionName = "1.0.0"
 
