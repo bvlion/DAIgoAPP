@@ -19,9 +19,7 @@ import net.ambitious.daigoapp.android.ui.AppTheme
 fun NativeAdCompose() {
   val context = LocalContext.current
   val textColor = MaterialTheme.colors.onBackground.toArgb()
-  val backgroundColor = MaterialTheme.colors.background.toArgb()
   AndroidViewBinding(AdmobBinding::inflate) {
-    carView.setCardBackgroundColor(backgroundColor)
     AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_KEY)
       .forNativeAd { nativeAd ->
         adImage.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
