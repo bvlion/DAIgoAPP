@@ -29,7 +29,7 @@ kotlin {
           }
         }
 
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
       }
     }
     val commonTest by getting {
