@@ -90,7 +90,7 @@ dependencies {
   @Suppress("GradleDependency") // WIP
   implementation("androidx.activity:activity-compose:1.4.0")
 
-  implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
+  implementation("com.google.accompanist:accompanist-flowlayout:0.27.0")
 
   implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
   implementation("com.google.firebase:firebase-crashlytics-ktx")
