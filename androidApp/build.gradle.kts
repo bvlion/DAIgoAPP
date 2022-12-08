@@ -77,7 +77,7 @@ dependencies {
 
   implementation("androidx.core:core-ktx:1.9.0")
   implementation("com.google.android.gms:play-services-ads-lite:21.2.0")
-  val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.1.1")!!)
+  val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.3.2")!!)
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
