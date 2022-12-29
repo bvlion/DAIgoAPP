@@ -2,7 +2,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
   kotlin("multiplatform")
-  kotlin("plugin.serialization") version "1.6.10"
+  kotlin("plugin.serialization") version "1.8.0"
   id("com.android.library")
   id("com.codingfeline.buildkonfig")
 }
