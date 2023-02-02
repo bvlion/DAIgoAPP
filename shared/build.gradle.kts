@@ -40,7 +40,7 @@ kotlin {
     }
     val androidMain by getting {
       dependencies {
-        implementation("io.ktor:ktor-client-android:1.6.8")
+        implementation("io.ktor:ktor-client-android:2.2.3")
       }
     }
     val androidTest by getting {
