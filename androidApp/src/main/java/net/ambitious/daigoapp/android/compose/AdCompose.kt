@@ -38,13 +38,13 @@ fun NativeAdCompose() {
           setTextColor(textColor)
         }
 
-        if (!nativeAd.advertiser.isNullOrEmpty()) {
-          nativeAdView.advertiserView = advertiser.apply {
-            text = nativeAd.advertiser
-            setTextColor(textColor)
+        nativeAdView.advertiserView = advertiser.apply {
+          text = if (!nativeAd.advertiser.isNullOrEmpty()) {
+            "[広告]・" + nativeAd.advertiser
+          } else {
+            "[広告]"
           }
-        } else {
-          advertiser.isVisible = false
+          setTextColor(textColor)
         }
 
         nativeAdView.setNativeAd(nativeAd)
