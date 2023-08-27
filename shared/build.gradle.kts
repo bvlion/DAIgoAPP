@@ -23,13 +23,9 @@ kotlin {
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
-          version {
-            strictly("1.6.1-native-mt")
-          }
-        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
       }
     }
     val commonTest by getting {
@@ -59,11 +55,15 @@ kotlin {
 }
 
 android {
+  namespace = "net.ambitious.daigoapp.android"
   compileSdk = 33
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   defaultConfig {
     minSdk = 26
-    targetSdk = 33
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 }
 
