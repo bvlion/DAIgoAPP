@@ -5,7 +5,7 @@ D◯I 語 Client
 
 ## 開発環境
 
-* Java 11
+* Java 1７
 * Android Studio
 * server 環境
   * [DAIgoAPI](https://github.com/bvlion/DAIgoAPI) を実行する
