@@ -38,11 +38,11 @@ jobs:
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 32
+          api-level: 31
           target: 'google_apis'
           arch: 'x86'
           profile: 'pixel'
-          disable-animations: true
+          disable-animations: false
           script: ./gradlew :androidApp:connectedCheck
 
       - name: Run shared Test
