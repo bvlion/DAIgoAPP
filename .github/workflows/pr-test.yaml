@@ -35,6 +35,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Run shared Test
+        run: ./gradlew :shared:testDebugUnitTest
+
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -44,9 +47,6 @@ jobs:
           profile: 'pixel'
           disable-animations: false
           script: ./gradlew :androidApp:connectedCheck
-
-      - name: Run shared Test
-        run: ./gradlew :shared:testDebugUnitTest
 
       - name: Upload UI test report
         uses: actions/upload-artifact@v2
