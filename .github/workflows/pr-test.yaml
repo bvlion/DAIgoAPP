@@ -28,14 +28,18 @@ jobs:
       - name: Set config files
         run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > androidApp/src/debug/google-services.json
 
-      - name: Run shared Test
-        run: ./gradlew :shared:testDebugUnitTest
-
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 32
+          target: 'google_apis'
+          arch: 'x86'
+          profile: 'pixel'
+          disable-animations: true
           script: ./gradlew :androidApp:connectedDebugAndroidTest
+
+      - name: Run shared Test
+        run: ./gradlew :shared:testDebugUnitTest
 
       - name: Upload UI test report
         uses: actions/upload-artifact@v2
