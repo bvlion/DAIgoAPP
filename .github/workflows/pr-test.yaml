@@ -4,11 +4,12 @@ on:
   pull_request:
     branches:
       - 'main'
+  workflow_dispatch:
 
 jobs:
   dependabot:
-    runs-on: macos-latest
-    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +29,12 @@ jobs:
       - name: Set config files
         run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > androidApp/src/debug/google-services.json
 
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -36,7 +43,7 @@ jobs:
           arch: 'x86'
           profile: 'pixel'
           disable-animations: true
-          script: ./gradlew :androidApp:connectedDebugAndroidTest
+          script: ./gradlew :androidApp:connectedCheck
 
       - name: Run shared Test
         run: ./gradlew :shared:testDebugUnitTest
