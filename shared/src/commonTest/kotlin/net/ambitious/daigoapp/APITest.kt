@@ -34,6 +34,7 @@ class APITest {
       assertEquals("test_test", json["token"]?.jsonPrimitive?.content)
     }
 
+  @OptIn(DelicateCoroutinesApi::class)
   private fun <T> testCall(
     request: suspend () -> T,
     test: (Result<T>) -> Unit
