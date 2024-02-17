@@ -1,0 +1,45 @@
+name: dependabot PR CI
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  dependabot:
+    runs-on: macos-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set config files
+        run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > androidApp/src/debug/google-services.json
+
+      - name: Run shared Test
+        run: ./gradlew :shared:testDebugUnitTest
+
+      - name: Run Android UI Test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 32
+          script: ./gradlew :androidApp:connectedDebugAndroidTest
+
+      - name: Upload UI test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: instrumentation_test_report
+          path: androidApp/build/reports/androidTests/connected/debug/
