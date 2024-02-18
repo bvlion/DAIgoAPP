@@ -88,7 +88,7 @@ dependencies {
 
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
 
-  implementation(platform("com.google.firebase:firebase-bom:31.2.3"))
+  implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
   implementation("com.google.firebase:firebase-crashlytics-ktx")
   implementation("com.google.firebase:firebase-analytics-ktx")
 
