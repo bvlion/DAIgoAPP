@@ -12,7 +12,7 @@ buildscript {
     classpath("com.google.gms:google-services:4.3.15")
     classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
     classpath("com.google.firebase:firebase-appdistribution-gradle:4.1.0")
-    classpath("com.github.triplet.gradle:play-publisher:3.8.4")
+    classpath("com.github.triplet.gradle:play-publisher:3.9.1")
   }
 }
 
