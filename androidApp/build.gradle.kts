@@ -71,7 +71,7 @@ android {
 dependencies {
   implementation(project(":shared"))
 
-  implementation("androidx.core:core-ktx:1.10.1")
+  implementation("androidx.core:core-ktx:1.12.0")
   implementation("com.google.android.gms:play-services-ads-lite:22.3.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.4.3")!!)
   implementation("androidx.compose.material:material:$composeVersion")
