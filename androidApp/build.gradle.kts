@@ -80,7 +80,7 @@ dependencies {
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
 
   implementation("androidx.datastore:datastore-preferences:1.0.0")
-  val roomVersion = captureVersion(implementation("androidx.room:room-runtime:2.4.3")!!)
+  val roomVersion = captureVersion(implementation("androidx.room:room-runtime:2.6.1")!!)
   kapt("androidx.room:room-compiler:$roomVersion")
 
   @Suppress("GradleDependency") // WIP
