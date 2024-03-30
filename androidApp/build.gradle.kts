@@ -72,7 +72,7 @@ dependencies {
   implementation(project(":shared"))
 
   implementation("androidx.core:core-ktx:1.10.1")
-  implementation("com.google.android.gms:play-services-ads-lite:22.3.0")
+  implementation("com.google.android.gms:play-services-ads-lite:23.0.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.4.3")!!)
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
@@ -88,7 +88,7 @@ dependencies {
 
   implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
 
-  implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+  implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
   implementation("com.google.firebase:firebase-crashlytics-ktx")
   implementation("com.google.firebase:firebase-analytics-ktx")
 
