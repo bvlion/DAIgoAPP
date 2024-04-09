@@ -19,7 +19,7 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        val ktorVersion = captureVersion(implementation("io.ktor:ktor-client-core:1.6.8")!!)
+        val ktorVersion = captureVersion(implementation("io.ktor:ktor-client-core:2.3.10")!!)
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
