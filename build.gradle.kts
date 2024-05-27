@@ -10,7 +10,7 @@ buildscript {
     classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
 
     classpath("com.google.gms:google-services:4.4.1")
-    classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
+    classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.1")
     classpath("com.google.firebase:firebase-appdistribution-gradle:4.2.0")
     classpath("com.github.triplet.gradle:play-publisher:3.9.1")
   }
