@@ -79,7 +79,7 @@ dependencies {
   implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
 
-  implementation("androidx.datastore:datastore-preferences:1.0.0")
+  implementation("androidx.datastore:datastore-preferences:1.1.1")
   val roomVersion = captureVersion(implementation("androidx.room:room-runtime:2.4.3")!!)
   kapt("androidx.room:room-compiler:$roomVersion")
 
