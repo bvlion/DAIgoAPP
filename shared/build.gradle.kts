@@ -47,7 +47,7 @@ kotlin {
     }
     val iosMain by getting {
       dependencies {
-        implementation("io.ktor:ktor-client-ios:1.6.8")
+        implementation("io.ktor:ktor-client-ios:2.3.12")
       }
     }
     val iosTest by getting
