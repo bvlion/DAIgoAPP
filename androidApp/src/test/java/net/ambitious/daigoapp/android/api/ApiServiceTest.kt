@@ -10,9 +10,9 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.HttpException
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 class ApiServiceTest {
 

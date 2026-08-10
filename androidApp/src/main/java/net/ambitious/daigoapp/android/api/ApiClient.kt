@@ -4,11 +4,13 @@ import kotlinx.serialization.json.Json
 import net.ambitious.daigoapp.android.BuildConfig
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 object ApiClient {
-  val host: String = BuildConfig.HOST.ifBlank { "http://10.0.2.2:8080" }
+  internal fun resolveHost(rawHost: String) = rawHost.ifBlank { "http://10.0.2.2:8080" }
+
+  val host: String = resolveHost(BuildConfig.HOST)
 
   val rulesUrl = "$host/app/rules?textColor=%s&backColor=%s&isPrivacyPolicy="
 
@@ -19,9 +21,9 @@ object ApiClient {
     useArrayPolymorphism = false
   }
 
-  private val noAuthClient = OkHttpClient.Builder().build()
+  internal val noAuthClient: OkHttpClient = OkHttpClient.Builder().build()
 
-  private val authClient = OkHttpClient.Builder()
+  internal val authClient: OkHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
       chain.proceed(
         chain.request().newBuilder()
