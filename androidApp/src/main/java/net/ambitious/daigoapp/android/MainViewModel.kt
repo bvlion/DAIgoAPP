@@ -13,15 +13,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import net.ambitious.daigoapp.API
+import kotlinx.coroutines.withContext
+import net.ambitious.daigoapp.android.api.ApiClient
+import net.ambitious.daigoapp.android.call.Result
 import net.ambitious.daigoapp.android.data.AppDataStore
 import net.ambitious.daigoapp.android.data.AppDatabase
 import net.ambitious.daigoapp.android.data.History
-import net.ambitious.daigoapp.call.Result
+import net.ambitious.daigoapp.android.domain.DaiGo
 
 @ExperimentalMaterialApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-  private val api = API()
   private val dataStore = AppDataStore.getDataStore(getApplication<Application>().applicationContext)
   private val db = Room.databaseBuilder(
     getApplication<Application>().applicationContext,
@@ -76,35 +77,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
   fun buttonClick(scope: CoroutineScope) {
     _loading.value = true
-    api.getDaigo(input.value) {
+    viewModelScope.launch {
+      val result = Result.of { ApiClient.authService.getDaigo(input.value) }
       _loading.value = false
-      when (it) {
+      when (result) {
         is Result.Success -> {
-          it.data.text.let { res ->
+          result.data.text.let { res ->
             setInputWord(res, true)
             _result.value = res
-            db.historyDao().insert(History(text = input.value, abbreviation = res))
+            withContext(Dispatchers.IO) {
+              db.historyDao().insert(History(text = input.value, abbreviation = res))
+            }
           }
           _isMenuShow.value = false
           scope.launch {
             resultBottomSheet.show()
           }
         }
-        is Result.Failure -> _errorDialog.value = it.err
+        is Result.Failure -> _errorDialog.value = result.err
       }
     }
   }
 
   fun proposalButtonClick() {
     _loading.value = true
-    api.postDaigo(input.value, proposal.value) {
+    viewModelScope.launch {
+      val result = Result.of {
+        ApiClient.authService.postDaigo(DaiGo.UpdateRequest(input.value, proposal.value))
+      }
       _loading.value = false
-      when (it) {
+      when (result) {
         is Result.Success -> {
           _result.value = proposal.value
           showProposal.value = false
         }
-        is Result.Failure -> _errorDialog.value = it.err
+        is Result.Failure -> _errorDialog.value = result.err
       }
     }
   }
@@ -121,7 +128,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun showRules(isPrivacyPolicy: Boolean) {
-    _rules.value = "${api.rulesUrl}$isPrivacyPolicy"
+    _rules.value = "${ApiClient.rulesUrl}$isPrivacyPolicy"
   }
 
   fun dismissRules() {
@@ -129,9 +136,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   init {
-    api.getSamples {
-      if (it is Result.Success) {
-        _words.value = it.data.samples
+    viewModelScope.launch {
+      val result = Result.of { ApiClient.authService.getSamples() }
+      if (result is Result.Success) {
+        _words.value = result.data.samples
       }
     }
     viewModelScope.launch {
@@ -156,10 +164,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     } else {
       _histories.value = null
     }
-  }
-
-  override fun onCleared() {
-    super.onCleared()
-    api.cancel()
   }
 }
