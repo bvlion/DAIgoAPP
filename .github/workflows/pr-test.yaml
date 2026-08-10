@@ -35,8 +35,8 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run shared Test
-        run: ./gradlew :shared:testDebugUnitTest
+      - name: Run Android unit Test
+        run: ./gradlew :androidApp:testDebugUnitTest
 
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2

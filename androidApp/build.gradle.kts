@@ -1,6 +1,7 @@
 plugins {
   id("com.android.application")
   kotlin("android")
+  kotlin("plugin.serialization") version "1.8.20"
   id("com.google.firebase.appdistribution")
   kotlin("kapt")
   id("com.github.triplet.play")
@@ -19,6 +20,9 @@ android {
     vectorDrawables {
       useSupportLibrary = true
     }
+
+    buildConfigField("String", "HOST", "\"${System.getenv("HOST") ?: ""}\"")
+    buildConfigField("String", "BEARER", "\"${System.getenv("BEARER") ?: "test_test"}\"")
   }
   signingConfigs {
     create("release") {
@@ -69,9 +73,13 @@ android {
 }
 
 dependencies {
-  implementation(project(":shared"))
-
   implementation("androidx.core:core-ktx:1.10.1")
+
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+  implementation("com.squareup.retrofit2:retrofit:2.11.0")
+  implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
+  implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
   implementation("com.google.android.gms:play-services-ads-lite:23.1.0")
   val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.4.3")!!)
   implementation("androidx.compose.material:material:$composeVersion")
@@ -93,6 +101,7 @@ dependencies {
   implementation("com.google.firebase:firebase-analytics-ktx")
 
   testImplementation("junit:junit:4.13.2")
+  testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
   androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
   debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 }

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import net.ambitious.daigoapp.call.Result
+import net.ambitious.daigoapp.android.call.Result
 
 @Composable
 fun ErrorDialogCompose(err: Result.ErrorDetail?, dismiss: () -> Unit) {
