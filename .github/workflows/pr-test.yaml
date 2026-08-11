@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Set config files
-        run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > androidApp/src/debug/google-services.json
+        run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > app/src/debug/google-services.json
 
       - name: Enable KVM group perms
         run: |
@@ -36,7 +36,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Run Android unit Test
-        run: ./gradlew :androidApp:testDebugUnitTest
+        run: ./gradlew :app:testDebugUnitTest
 
       - name: Run Android UI Test
         uses: reactivecircus/android-emulator-runner@v2
@@ -46,10 +46,10 @@ jobs:
           arch: 'x86_64'
           profile: 'pixel'
           disable-animations: false
-          script: ./gradlew :androidApp:connectedCheck
+          script: ./gradlew :app:connectedCheck
 
       - name: Upload UI test report
         uses: actions/upload-artifact@v2
         with:
           name: instrumentation_test_report
-          path: androidApp/build/reports/androidTests/connected/debug/
+          path: app/build/reports/androidTests/connected/debug/

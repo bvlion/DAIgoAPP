@@ -7,5 +7,4 @@ pluginManagement {
 }
 
 rootProject.name = "DAIgoAPP"
-include(":androidApp")
-include(":shared")
+include(":app")

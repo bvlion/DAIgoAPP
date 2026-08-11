@@ -41,7 +41,7 @@ android {
       firebaseAppDistribution {
         groups = "developer"
         artifactType = "APK"
-        artifactPath = "androidApp/build/outputs/apk/release/androidApp-release.apk"
+        artifactPath = "app/build/outputs/apk/release/app-release.apk"
         releaseNotesFile = "note.txt"
       }
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))

@@ -5,8 +5,8 @@ on:
     branches:
       - 'main'
     paths:
-      - 'androidApp/src/main/play/listings/ja-JP/**.txt'
-      - 'androidApp/src/main/play/listings/ja-JP/graphics/**.png'
+      - 'app/src/main/play/listings/ja-JP/**.txt'
+      - 'app/src/main/play/listings/ja-JP/graphics/**.png'
 
 env:
   GOOGLE_PLAY_SERVICE_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_JSON }}
