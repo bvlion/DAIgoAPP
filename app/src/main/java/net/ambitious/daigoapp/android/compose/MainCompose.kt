@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.ui.AppTheme
 
@@ -94,8 +93,8 @@ fun SamplesCompose(
 ) {
   FlowRow(
     modifier = Modifier.fillMaxWidth().padding(16.dp),
-    mainAxisSpacing = 12.dp,
-    crossAxisSpacing = 8.dp
+    horizontalArrangement = Arrangement.spacedBy(12.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
     words.forEach {
       Card(

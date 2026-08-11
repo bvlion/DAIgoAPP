@@ -1,18 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-  id("com.android.application")
-  kotlin("android")
-  kotlin("plugin.serialization") version "1.8.20"
-  id("com.google.firebase.appdistribution")
-  kotlin("kapt")
-  id("com.github.triplet.play")
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.compose)
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.google.services)
+  alias(libs.plugins.firebase.crashlytics)
+  alias(libs.plugins.firebase.appdistribution)
+  alias(libs.plugins.play.publisher)
 }
 
 android {
   namespace = "net.ambitious.daigoapp.android"
-  compileSdk = 33
+  compileSdk = 37
   defaultConfig {
     minSdk = 26
-    targetSdk = 33
+    targetSdk = 37
     versionCode = 8
     versionName = "1.0.3"
 
@@ -44,7 +49,7 @@ android {
         artifactPath = "app/build/outputs/apk/release/app-release.apk"
         releaseNotesFile = "note.txt"
       }
-      proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), file("proguard-rules.pro"))
     }
     debug {
       isDebuggable = true
@@ -58,58 +63,59 @@ android {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
-  kotlinOptions {
-    jvmTarget = "17"
-  }
   buildFeatures {
     compose = true
     buildConfig = true
     viewBinding = true
     dataBinding = true
   }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.6"
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget = JvmTarget.fromTarget("17")
   }
 }
 
 dependencies {
-  implementation("androidx.core:core-ktx:1.10.1")
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-  implementation("com.squareup.retrofit2:retrofit:2.11.0")
-  implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
-  implementation("com.squareup.okhttp3:okhttp:4.12.0")
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.kotlinx.serialization.json)
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.converter.kotlinx.serialization)
+  implementation(platform(libs.okhttp.bom))
+  implementation(libs.okhttp)
 
-  implementation("com.google.android.gms:play-services-ads-lite:23.1.0")
-  val composeVersion = captureVersion(implementation("androidx.compose.ui:ui:1.4.3")!!)
-  implementation("androidx.compose.material:material:$composeVersion")
-  implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-  implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
-  implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+  implementation(libs.play.services.ads.lite)
 
-  implementation("androidx.datastore:datastore-preferences:1.0.0")
-  val roomVersion = captureVersion(implementation("androidx.room:room-runtime:2.4.3")!!)
-  kapt("androidx.room:room-compiler:$roomVersion")
+  implementation(platform(libs.androidx.compose.bom))
+  implementation(libs.androidx.compose.ui)
+  implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.material.icons.core)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.compose.ui.viewbinding)
+  implementation(libs.androidx.compose.runtime.livedata)
 
-  @Suppress("GradleDependency") // WIP
-  implementation("androidx.activity:activity-compose:1.4.0")
+  implementation(libs.androidx.datastore.preferences)
+  implementation(libs.androidx.room.runtime)
+  kapt(libs.androidx.room.compiler)
 
-  implementation("com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
+  implementation(libs.androidx.activity.compose)
 
-  implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-  implementation("com.google.firebase:firebase-crashlytics-ktx")
-  implementation("com.google.firebase:firebase-analytics-ktx")
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.crashlytics)
+  implementation(libs.firebase.analytics)
 
-  testImplementation("junit:junit:4.13.2")
-  testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-  androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-  debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+  testImplementation(libs.junit)
+  testImplementation(platform(libs.okhttp.bom))
+  testImplementation(libs.okhttp.mockwebserver)
+
+  androidTestImplementation(platform(libs.androidx.compose.bom))
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  debugImplementation(libs.androidx.compose.ui.tooling)
 }
-
-apply(plugin = "com.google.gms.google-services")
-apply(plugin = "com.google.firebase.crashlytics")
-
-fun captureVersion(dependency: Dependency) = dependency.version
 
 play {
   track.set("production")
