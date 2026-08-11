@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.google.accompanist.flowlayout.FlowRow
 import net.ambitious.daigoapp.android.BuildConfig
 import net.ambitious.daigoapp.android.R
 import net.ambitious.daigoapp.android.data.AppDataStore

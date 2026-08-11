@@ -55,7 +55,9 @@ class MainActivity : ComponentActivity() {
         AppDataStore.ViewMode.DARK -> true
       }) {
         Surface(
-          modifier = Modifier.fillMaxSize(),
+          modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
           color = MaterialTheme.colors.background
         ) {
           ErrorDialogCompose(viewModel.errorDialog.collectAsState().value) {

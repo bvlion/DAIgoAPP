@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.unit.Density
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
@@ -58,7 +59,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
   val isMenuShow = _isMenuShow.asStateFlow()
 
   val showProposal = mutableStateOf(false)
-  val resultBottomSheet = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
+  val resultBottomSheet = ModalBottomSheetState(
+    ModalBottomSheetValue.Hidden,
+    Density(getApplication<Application>().resources.displayMetrics.density)
+  )
 
   private val _viewMode = MutableStateFlow(AppDataStore.ViewMode.DEFAULT)
   val viewMode = _viewMode.asStateFlow()
