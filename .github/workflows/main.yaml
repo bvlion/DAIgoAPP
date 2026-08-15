@@ -9,6 +9,9 @@ on:
       - 'app/**.xml'
       - 'app/proguard-rules.pro'
       - '**.gradle.kts'
+      - 'gradle/libs.versions.toml'
+      - 'gradle.properties'
+      - 'gradle/wrapper/gradle-wrapper.properties'
       - '.github/workflows/main.yaml'
 
 env:
