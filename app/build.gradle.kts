@@ -86,7 +86,6 @@ dependencies {
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.ui.viewbinding)
   implementation(libs.androidx.compose.runtime.livedata)
 
   implementation(libs.androidx.datastore.preferences)
