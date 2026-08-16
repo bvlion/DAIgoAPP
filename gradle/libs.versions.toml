@@ -21,8 +21,6 @@ kotlinxCoroutines = "1.11.0"
 retrofit = "3.0.0"
 okhttpBom = "5.4.0"
 
-playServicesAdsLite = "25.0.0"
-
 junit = "4.13.2"
 
 [libraries]
@@ -55,8 +53,6 @@ retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", n
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpBom" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
-
-play-services-ads-lite = { group = "com.google.android.gms", name = "play-services-ads-lite", version.ref = "playServicesAdsLite" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 

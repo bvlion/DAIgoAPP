@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.android.compose.*
 import net.ambitious.daigoapp.android.data.AppDataStore
@@ -31,7 +30,6 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    MobileAds.initialize(this)
     viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
     setContent {
@@ -134,7 +132,6 @@ fun AllViews(
       .verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.SpaceBetween
   ) {
-    NativeAdCompose()
     Column {
         SamplesCompose(onTextChange, words)
         InputCompose(input, createButtonEnable, onTextChange, buttonClick, showMenuClick)
