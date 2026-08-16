@@ -39,8 +39,6 @@ android {
   buildTypes {
     release {
       isMinifyEnabled = true
-      buildConfigField("String", "ADMOB_NATIVE_KEY", "\"${System.getenv("ANDROID_ADMOB_NATIVE_KEY")}\"")
-      manifestPlaceholders["admob_key"] = System.getenv("ANDROID_ADMOB_KEY") ?: ""
       signingConfig = signingConfigs.getByName("release")
       firebaseAppDistribution {
         groups = "developer"
@@ -54,8 +52,6 @@ android {
       isDebuggable = true
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
-      buildConfigField("String", "ADMOB_NATIVE_KEY", "\"ca-app-pub-3940256099942544/2247696110\"")
-      manifestPlaceholders["admob_key"] = "ca-app-pub-3940256099942544~3347511713"
     }
   }
   compileOptions {
@@ -65,8 +61,6 @@ android {
   buildFeatures {
     compose = true
     buildConfig = true
-    viewBinding = true
-    dataBinding = true
   }
 }
 
@@ -87,14 +81,11 @@ dependencies {
   implementation(platform(libs.okhttp.bom))
   implementation(libs.okhttp)
 
-  implementation(libs.play.services.ads.lite)
-
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.ui.viewbinding)
   implementation(libs.androidx.compose.runtime.livedata)
 
   implementation(libs.androidx.datastore.preferences)

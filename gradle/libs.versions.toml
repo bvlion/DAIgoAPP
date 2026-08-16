@@ -21,8 +21,6 @@ kotlinxCoroutines = "1.11.0"
 retrofit = "3.0.0"
 okhttpBom = "5.4.0"
 
-playServicesAdsLite = "25.0.0"
-
 junit = "4.13.2"
 
 [libraries]
@@ -37,7 +35,6 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-ui-viewbinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
@@ -55,8 +52,6 @@ retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", n
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpBom" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
-
-play-services-ads-lite = { group = "com.google.android.gms", name = "play-services-ads-lite", version.ref = "playServicesAdsLite" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
