@@ -1,33 +1,45 @@
-name: dependabot PR CI
+name: PR CI
 
 on:
   pull_request:
     branches:
       - 'main'
+    paths:
+      - '**.kt'
+      - '**.kts'
+      - '**.xml'
+      - '**.properties'
+      - 'gradle/libs.versions.toml'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
-  dependabot:
+  build-and-test:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           distribution: 'corretto'
           java-version: '17'
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v6
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       - name: Set config files
         run: echo ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON }} | base64 -d > app/src/debug/google-services.json
+
+      - name: Run Android debug build
+        run: ./gradlew :app:assembleDebug
+
+      - name: Run Android unit test
+        run: ./gradlew :app:testDebugUnitTest
 
       - name: Enable KVM group perms
         run: |
@@ -35,10 +47,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run Android unit Test
-        run: ./gradlew :app:testDebugUnitTest
-
-      - name: Run Android UI Test
+      - name: Run Android instrumentation test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 32
@@ -48,8 +57,8 @@ jobs:
           disable-animations: false
           script: ./gradlew :app:connectedCheck
 
-      - name: Upload UI test report
-        uses: actions/upload-artifact@v2
+      - name: Upload instrumentation test report
+        uses: actions/upload-artifact@v7
         with:
           name: instrumentation_test_report
           path: app/build/reports/androidTests/connected/debug/
