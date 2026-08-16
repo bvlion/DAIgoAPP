@@ -7,7 +7,6 @@ plugins {
   alias(libs.plugins.ksp)
   alias(libs.plugins.google.services)
   alias(libs.plugins.firebase.crashlytics)
-  alias(libs.plugins.firebase.appdistribution)
   alias(libs.plugins.play.publisher)
 }
 
@@ -40,12 +39,6 @@ android {
     release {
       isMinifyEnabled = true
       signingConfig = signingConfigs.getByName("release")
-      firebaseAppDistribution {
-        groups = "developer"
-        artifactType = "APK"
-        artifactPath = "app/build/outputs/apk/release/app-release.apk"
-        releaseNotesFile = "note.txt"
-      }
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), file("proguard-rules.pro"))
     }
     debug {

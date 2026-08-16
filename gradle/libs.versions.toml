@@ -12,7 +12,6 @@ composeBom = "2026.06.01"
 firebaseBom = "34.17.0"
 googleServices = "4.5.0"
 firebaseCrashlyticsGradle = "3.0.7"
-firebaseAppdistributionGradle = "5.3.0"
 tripletPlay = "4.1.0"
 
 ksp = "2.3.11"
@@ -62,5 +61,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppdistributionGradle" }
 play-publisher = { id = "com.github.triplet.play", version.ref = "tripletPlay" }
