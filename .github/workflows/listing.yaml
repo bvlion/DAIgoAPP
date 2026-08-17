@@ -30,13 +30,10 @@ jobs:
         run: ./gradlew publishListing
 
       - name: Notify Slack
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v4.0.0
         with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
-          username: GHA_LISTING
-          icon_emoji: ':smiling_face_with_3_hearts:'
-          channel: '#略語generator'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "DAIgoAPP listing: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         if: always()
