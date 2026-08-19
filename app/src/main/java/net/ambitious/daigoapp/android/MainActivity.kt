@@ -1,10 +1,13 @@
 package net.ambitious.daigoapp.android
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -47,68 +50,88 @@ class MainActivity : ComponentActivity() {
 
       val scope = rememberCoroutineScope()
 
-      AppTheme(when (viewMode.value) {
+      val useDarkTheme = when (viewMode.value) {
         AppDataStore.ViewMode.DEFAULT -> isSystemInDarkTheme()
         AppDataStore.ViewMode.LIGHT -> false
         AppDataStore.ViewMode.DARK -> true
-      }) {
+      }
+
+      DisposableEffect(useDarkTheme) {
+        enableEdgeToEdge(
+          statusBarStyle = SystemBarStyle.auto(
+            Color.TRANSPARENT,
+            Color.TRANSPARENT,
+          ) { useDarkTheme },
+          navigationBarStyle = SystemBarStyle.auto(
+            Color.TRANSPARENT,
+            Color.TRANSPARENT,
+          ) { useDarkTheme },
+        )
+        onDispose {}
+      }
+
+      AppTheme(useDarkTheme) {
         Surface(
-          modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars),
+          modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colors.background
         ) {
-          ErrorDialogCompose(viewModel.errorDialog.collectAsState().value) {
-            viewModel.dismissErrorDialog()
-          }
-
-          RulesDialogCompose(rules.value) {
-            viewModel.dismissRules()
-          }
-
-          HistoryDialogCompose(histories.value) {
-            viewModel.setHistoryShow(false)
-          }
-
-          LoadingCompose(loading.value)
-
-          BackHandler(viewModel.resultBottomSheet.isVisible) {
-            scope.launch {
-              viewModel.resultBottomSheet.hide()
+          Box(
+            modifier = Modifier
+              .fillMaxSize()
+              .windowInsetsPadding(WindowInsets.systemBars)
+          ) {
+            ErrorDialogCompose(viewModel.errorDialog.collectAsState().value) {
+              viewModel.dismissErrorDialog()
             }
-          }
 
-          ModalBottomSheetLayout(
-            sheetState = viewModel.resultBottomSheet,
-            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-            sheetContent = {
-              if (isMenuShow.value) {
-                MenuCompose(
-                  viewMode.value,
-                  { viewModel.setViewMode(it) },
-                  { viewModel.showRules(it) },
-                  { viewModel.setHistoryShow(true) }
-                )
-              } else {
-                ResultModalCompose(
-                  viewModel.showProposal,
-                  result.value,
-                  input.value,
-                  proposal.value,
-                  { viewModel.setInputWord(it, true) },
-                  { viewModel.proposalButtonClick() }
-                )
+            RulesDialogCompose(rules.value) {
+              viewModel.dismissRules()
+            }
+
+            HistoryDialogCompose(histories.value) {
+              viewModel.setHistoryShow(false)
+            }
+
+            LoadingCompose(loading.value)
+
+            BackHandler(viewModel.resultBottomSheet.isVisible) {
+              scope.launch {
+                viewModel.resultBottomSheet.hide()
               }
             }
-          ) {
-            AllViews(
-              input.value,
-              createButtonEnable.value,
-              words.value,
-              { viewModel.setInputWord(it, false) },
-              { viewModel.buttonClick(scope) },
-              { viewModel.showMenu(scope) }
-            )
+
+            ModalBottomSheetLayout(
+              sheetState = viewModel.resultBottomSheet,
+              sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+              sheetContent = {
+                if (isMenuShow.value) {
+                  MenuCompose(
+                    viewMode.value,
+                    { viewModel.setViewMode(it) },
+                    { viewModel.showRules(it) },
+                    { viewModel.setHistoryShow(true) }
+                  )
+                } else {
+                  ResultModalCompose(
+                    viewModel.showProposal,
+                    result.value,
+                    input.value,
+                    proposal.value,
+                    { viewModel.setInputWord(it, true) },
+                    { viewModel.proposalButtonClick() }
+                  )
+                }
+              }
+            ) {
+              AllViews(
+                input.value,
+                createButtonEnable.value,
+                words.value,
+                { viewModel.setInputWord(it, false) },
+                { viewModel.buttonClick(scope) },
+                { viewModel.showMenu(scope) }
+              )
+            }
           }
         }
       }
@@ -132,7 +155,7 @@ fun AllViews(
       .verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.SpaceBetween
   ) {
-    Column {
+    Column(Modifier.padding(top = 8.dp)) {
         SamplesCompose(onTextChange, words)
         InputCompose(input, createButtonEnable, onTextChange, buttonClick, showMenuClick)
     }
