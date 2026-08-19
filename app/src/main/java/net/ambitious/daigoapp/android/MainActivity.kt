@@ -1,8 +1,10 @@
 package net.ambitious.daigoapp.android
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,7 +34,13 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
+    // API 28以下はnavigationBarStyleのscrim色がOSのdark/light判定のみで決まり、
+    // アプリ内のDEFAULT/LIGHT/DARK(useDarkTheme)と食い違い得るため、
+    // scrimを持たせず透明にしてアプリ自身のbackgroundをそのまま見せる。
+    // icon appearanceはSideEffect側でuseDarkThemeへ同期する。
+    enableEdgeToEdge(
+      navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
+    )
     viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
     setContent {
