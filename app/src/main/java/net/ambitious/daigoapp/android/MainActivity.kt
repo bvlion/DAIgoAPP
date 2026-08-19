@@ -1,10 +1,8 @@
 package net.ambitious.daigoapp.android
 
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +17,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.launch
 import net.ambitious.daigoapp.android.compose.*
@@ -33,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
     viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
     setContent {
@@ -56,18 +56,11 @@ class MainActivity : ComponentActivity() {
         AppDataStore.ViewMode.DARK -> true
       }
 
-      DisposableEffect(useDarkTheme) {
-        enableEdgeToEdge(
-          statusBarStyle = SystemBarStyle.auto(
-            Color.TRANSPARENT,
-            Color.TRANSPARENT,
-          ) { useDarkTheme },
-          navigationBarStyle = SystemBarStyle.auto(
-            Color.TRANSPARENT,
-            Color.TRANSPARENT,
-          ) { useDarkTheme },
-        )
-        onDispose {}
+      SideEffect {
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+          isAppearanceLightStatusBars = !useDarkTheme
+          isAppearanceLightNavigationBars = !useDarkTheme
+        }
       }
 
       AppTheme(useDarkTheme) {
@@ -78,7 +71,7 @@ class MainActivity : ComponentActivity() {
           Box(
             modifier = Modifier
               .fillMaxSize()
-              .windowInsetsPadding(WindowInsets.systemBars)
+              .windowInsetsPadding(WindowInsets.systemBars.union(WindowInsets.displayCutout))
           ) {
             ErrorDialogCompose(viewModel.errorDialog.collectAsState().value) {
               viewModel.dismissErrorDialog()
