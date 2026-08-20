@@ -9,6 +9,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-google-services.json
 google-play-service.json
 .envrc

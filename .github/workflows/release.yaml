@@ -5,7 +5,6 @@ on:
     types: [published]
 
 env:
-  GOOGLE_SERVICES_JSON: ${{ secrets.ANDROID_GOOGLE_SERVICES_JSON_64 }}
   KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
   KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
   HOST: ${{ secrets.HOST }}
@@ -30,9 +29,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Set config files
-        run: echo $GOOGLE_SERVICES_JSON | base64 -d > app/src/release/google-services.json
 
       - name: Run Build
         run: ./gradlew bundleRelease
