@@ -7,7 +7,7 @@ androidxActivityCompose = "1.13.0"
 androidxLifecycleViewmodelKtx = "2.11.0"
 androidxDatastorePreferences = "1.1.7"
 androidxRoom = "2.8.4"
-composeBom = "2026.06.01"
+composeBom = "2026.08.00"
 
 tripletPlay = "4.1.0"
 
