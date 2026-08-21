@@ -9,7 +9,7 @@ androidxDatastorePreferences = "1.1.7"
 androidxRoom = "2.8.4"
 composeBom = "2026.06.01"
 
-tripletPlay = "4.1.0"
+tripletPlay = "4.1.1"
 
 ksp = "2.3.11"
 kotlinxSerializationJson = "1.11.0"
