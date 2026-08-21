@@ -131,7 +131,7 @@ fun MenuCompose(
         .align(Alignment.Start),
       onClick = {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
-          "https://docs.google.com/forms/d/e/1FAIpQLSecLnJGQu3C-24UMTcji_jnt7kRqgtTjQglKyA8xu6ILdnrDQ/viewform"
+          "https://contact.ambitious-i.net/ryakugo-generator"
         )))
       }
     ) {
