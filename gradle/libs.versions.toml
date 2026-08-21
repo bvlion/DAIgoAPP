@@ -15,7 +15,7 @@ ksp = "2.3.11"
 kotlinxSerializationJson = "1.11.0"
 kotlinxCoroutines = "1.11.0"
 retrofit = "3.0.0"
-okhttpBom = "5.4.0"
+okhttpBom = "5.5.0"
 
 junit = "4.13.2"
 
