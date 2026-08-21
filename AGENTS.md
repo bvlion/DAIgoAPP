@@ -7,7 +7,6 @@ DAIgoAPPはAndroidスマートフォン専用アプリで、application module�
 - Jetpack Compose
 - Retrofit / OkHttp / kotlinx.serialization
 - Room / DataStore
-- Firebase Analytics / Firebase Crashlytics
 - Java 17、リポジトリ同梱のGradle Wrapper
 
 backendは [bvlion/DAIgoAPI2](https://github.com/bvlion/DAIgoAPI2) です。
@@ -19,7 +18,7 @@ backendは [bvlion/DAIgoAPI2](https://github.com/bvlion/DAIgoAPI2) です。
 - 挙動を推測だけで変更せず、既存の実装・呼び出し元・テスト・GitHub Actions workflowを確認してください。
 - DAIgoAPPの規模に対して不要なlayer / abstractionを追加しないでください。
 - Android専用構成のため、明示的な要件がない限りKMP / iOS構成を再導入しないでください。
-- AdMob / Google Mobile Ads SDK、Firebase App Distributionは撤去済みです。「以前あったから」という理由で再導入しないでください。
+- AdMob / Google Mobile Ads SDK、Firebase App Distribution、Firebase Analytics / Firebase Crashlyticsは撤去済みです。「以前あったから」という理由で再導入しないでください。
 
 ## コーディング / 依存管理
 
@@ -45,7 +44,7 @@ DAIgoAPPはスマートフォン専用です。ローカル環境にWear OS emul
 ## 秘密情報とローカル設定
 
 - 新しい秘密値・API token・password・service account JSONをコミットしないでください。
-- `google-services.json` / `google-play-service.json` / `.envrc` は既存の`.gitignore`の扱いを維持してください。
+- `google-play-service.json` / `.envrc` は既存の`.gitignore`の扱いを維持してください。
 - 必要な秘密情報が環境にない場合、ダミー値のコミットや設定の迂回でbuildを通さず、未検証として報告してください。
 - release signingの検証に必要な環境がない場合は未検証として報告してください。
 - `release.keystore` は既にリポジトリで管理されている署名ファイルです。明示的な依頼がない限り削除・置換・ローテーションしないでください。

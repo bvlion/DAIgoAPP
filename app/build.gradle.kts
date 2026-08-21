@@ -5,8 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.google.services)
-  alias(libs.plugins.firebase.crashlytics)
   alias(libs.plugins.play.publisher)
 }
 
@@ -86,10 +84,6 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   implementation(libs.androidx.activity.compose)
-
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.crashlytics)
-  implementation(libs.firebase.analytics)
 
   testImplementation(libs.junit)
   testImplementation(platform(libs.okhttp.bom))

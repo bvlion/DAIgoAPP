@@ -44,7 +44,6 @@ release buildは署名用環境変数と後述の`release.keystore`が必要な�
 
 以下はリポジトリに含めず、各自の環境で用意します（`.gitignore`で除外済み）。
 
-* `google-services.json`
 * `google-play-service.json`
 * `.envrc`（ローカルの`HOST` / `BEARER`等）
 
