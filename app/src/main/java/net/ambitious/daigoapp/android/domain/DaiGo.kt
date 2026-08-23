@@ -14,5 +14,7 @@ object DaiGo {
   )
 
   @Serializable
-  data class UpdateResponse(val save: String)
+  data class UpdateResponse(val save: String) {
+    val isSuccess: Boolean get() = save == "success"
+  }
 }
