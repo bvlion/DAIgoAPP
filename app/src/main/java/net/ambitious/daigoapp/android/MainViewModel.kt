@@ -107,7 +107,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     _loading.value = true
     viewModelScope.launch {
       val result = Result.of {
-        ApiClient.authService.postDaigo(DaiGo.UpdateRequest(input.value, proposal.value))
+        ApiClient.authService.postDaigo(DaiGo.UpdateRequest(input.value, proposal.value)).also {
+          check(it.isSuccess) { "postDaigo failed: save=${it.save}" }
+        }
       }
       _loading.value = false
       when (result) {

@@ -8,6 +8,8 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import retrofit2.HttpException
@@ -50,17 +52,27 @@ class ApiServiceTest {
 
   @Test
   fun postDaigoSendsSerializedBodyAndParsesResponse() = runBlocking {
-    server.enqueue(MockResponse().setBody("""{"save":"ok"}"""))
+    server.enqueue(MockResponse().setBody("""{"save":"success"}"""))
 
     val response = service.postDaigo(DaiGo.UpdateRequest("結婚してください", "KSK"))
 
-    assertEquals("ok", response.save)
+    assertEquals("success", response.save)
+    assertTrue(response.isSuccess)
     val request = server.takeRequest()
     assertEquals("POST", request.method)
     assertEquals(
       """{"word":"結婚してください","dai_go":"KSK"}""",
       request.body.readUtf8()
     )
+  }
+
+  @Test
+  fun postDaigoWithNonSuccessSaveIsNotTreatedAsSuccess() = runBlocking {
+    server.enqueue(MockResponse().setBody("""{"save":"failed"}"""))
+
+    val response = service.postDaigo(DaiGo.UpdateRequest("結婚してください", "KSK"))
+
+    assertFalse(response.isSuccess)
   }
 
   @Test
