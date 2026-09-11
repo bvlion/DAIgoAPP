@@ -17,11 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: set up JDK 17
+      - name: set up JDK 25
         uses: actions/setup-java@v6
         with:
           distribution: 'corretto'
-          java-version: '17'
+          java-version: '25'
 
       - name: Set publisher files
         run: echo $GOOGLE_PLAY_SERVICE_JSON | base64 -d > google-play-service.json
