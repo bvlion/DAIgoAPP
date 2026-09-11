@@ -7,7 +7,7 @@ DAIgoAPPはAndroidスマートフォン専用アプリで、application module�
 - Jetpack Compose
 - Retrofit / OkHttp / kotlinx.serialization
 - Room / DataStore
-- Java 17、リポジトリ同梱のGradle Wrapper
+- Gradle / CIの実行環境はJDK 25 LTS、Java / Kotlin targetは17、Gradleはリポジトリ同梱のWrapper
 
 backendは [bvlion/DAIgoAPI2](https://github.com/bvlion/DAIgoAPI2) です。
 
