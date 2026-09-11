@@ -11,7 +11,8 @@ D◯I 語 Client
 
 ## 開発環境
 
-* Java 17
+* JDK 25 LTS（Gradle / CI実行環境）
+* Java / Kotlin target 17
 * Android Studio
 * リポジトリ同梱のGradle Wrapper
 
